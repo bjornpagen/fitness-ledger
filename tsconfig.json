@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"allowImportingTsExtensions": true,
+		"allowJs": false,
+		"verbatimModuleSyntax": true,
+		"moduleDetection": "force",
+		"isolatedModules": true,
+		"erasableSyntaxOnly": true,
+		"resolvePackageJsonImports": true,
+		"resolvePackageJsonExports": true,
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noUncheckedIndexedAccess": true,
+		"exactOptionalPropertyTypes": true,
+		"useUnknownInCatchVariables": true,
+		"noImplicitOverride": true,
+		"noFallthroughCasesInSwitch": true,
+		"skipLibCheck": true,
+		"noEmit": true,
+		"types": ["node"]
+	},
+	"include": ["src/**/*.ts", "scripts/**/*.ts", "test/**/*.ts", "private/**/*.ts"]
+}

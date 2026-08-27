@@ -1,0 +1,10 @@
+language js
+
+or {
+	`return null`,
+	`return undefined`,
+	`return ""`
+} as $bailout where {
+	$bailout <: within JsDefaultClause() ,
+	register_diagnostic(span=$bailout, message="A switch default cannot silently fall back. Prove the closed variant exhaustive or fail explicitly.", severity="error")
+}

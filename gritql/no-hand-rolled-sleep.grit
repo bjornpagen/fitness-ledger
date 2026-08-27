@@ -1,0 +1,14 @@
+language js
+
+or {
+	`new Promise(($resolve) => $body)`,
+	`new Promise<$_>(($resolve) => $body)`,
+	`new Promise(function $_($resolve) { $body })`,
+	`new Promise<$_>(function $_($resolve) { $body })`
+} as $sleep where {
+	$body <: contains or {
+		`setTimeout($resolve, $_)`,
+		`window.setTimeout($resolve, $_)`
+	},
+	register_diagnostic(span=$sleep, message="Hand-rolled sleeps are banned. Use Effect.sleep with Clock and Schedule.", severity="error")
+}

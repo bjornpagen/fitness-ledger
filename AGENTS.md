@@ -1,0 +1,23 @@
+# Repository rules
+
+- `pnpm check` is the acceptance gate.
+- Read `docs/AGENT_OPERATIONS.md` before answering personal questions or writing observations.
+- Never track anything under `private/`. It contains identity, observations, database state, purchased sources, and photographs.
+- Never put a residence, facility identity, precise coordinate, purchaser watermark, access token, or personal profile value in the public tree or Git history.
+- TypeScript is the only implementation and scripting language. Do not add CSV databases, SQL, or an alternate entry DSL.
+- `src/mechanism/` must not import `src/policy/` or `src/application/`.
+- `src/policy/` owns the prescription, exercise roster, execution instructions, schedule, and WHOOP trust choices.
+- `src/application/schema.ts` is the authoritative BumbleDB theory. A fingerprint change requires fresh-store ETL.
+- BumbleDB is the only store for real personal observations. Write facts with typed transactions; do not add a second observation representation.
+- Agents use `src/ledger.ts`, BumbleDB queries, and typed transactions directly.
+- Keep the fixed America/Chicago routine intact: strength Monday/Thursday 07:00–08:00, e-bike Tuesday/Friday/Saturday 07:00–08:00, and daily 22:00–06:30 sleep opportunity.
+- Keep the 06:30 200 mg caffeine dose, 14:30 cutoff, identical eleven-exercise workout, dynamic set/repetition/target-RIR/cadence/rest prescription, 30/30/30 neck TSC protocol, and dynamic load-progression rule intact.
+- Keep the fixed 11-exercise prescription free of general warm-ups, cardio warm-ups, and ramp-set subsystems.
+- Store reality, not projections: no completed/missed flags, readiness/recovery scores, calendar-driven progression, or WHOOP-derived coaching.
+- WHOOP may contribute only UUID identity, exact intervals/offsets, average/max HR, integer zone durations, and nap classification.
+- Never invent selector pins, setup marks, D-series pounds, or machine identities. Effective setup settings are observed body-fit coordinates; `SelectorWorkSet.position` is historical resistance.
+- Exercise order, set count, and progression remain policy rather than duplicated database state. A next-session resistance is computed from actual sets and policy, never stored as mutable truth.
+- Full source binaries live in `private/sources/`. Public `sources/` contains only catalogs and canonical references. Rebuild searchable derivatives with `pnpm sources:extract-text`.
+- Do not add hidden files or hidden directories beyond existing Git/package-manager infrastructure.
+- Use Effect 4 programs and `NodeRuntime.runMain` at executable boundaries.
+- Do not configure or push to a remote without the user's explicit remote and branch authorization.

@@ -1,0 +1,14 @@
+language js
+
+or {
+	`String($error)`,
+	`JSON.stringify($error)`
+} as $flatten where {
+	$error <: or {
+		`$_.error`,
+		"error",
+		"err",
+		"cause"
+	},
+	register_diagnostic(span=$flatten, message="Do not flatten a failure. Preserve the typed error or Effect Cause.", severity="error")
+}

@@ -1,0 +1,5 @@
+language js
+
+`$_ instanceof Error` as $check where {
+	register_diagnostic(span=$check, message="Do not branch on instanceof Error. Match the typed Effect failure or inspect Cause.", severity="error")
+}

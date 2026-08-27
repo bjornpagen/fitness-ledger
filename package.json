@@ -1,0 +1,40 @@
+{
+	"name": "fitness-ledger",
+	"private": true,
+	"license": "0BSD",
+	"type": "module",
+	"imports": {
+		"#application/*": "./src/application/*",
+		"#mechanism/*": "./src/mechanism/*",
+		"#policy/*": "./src/policy/*"
+	},
+	"packageManager": "pnpm@11.15.1",
+	"engines": {
+		"node": ">=24"
+	},
+	"scripts": {
+		"db:init": "node private/seed/index.ts",
+		"plan": "node src/application/cli.ts plan",
+		"status": "node src/application/cli.ts status",
+		"whoop:sync": "node src/application/cli.ts whoop:sync",
+		"sources:extract-text": "node scripts/extract-source-text.ts",
+		"typecheck": "node node_modules/typescript/bin/tsc --noEmit",
+		"format": "biome format --write src scripts test package.json tsconfig.json biome.json",
+		"lint": "biome lint src scripts test",
+		"test": "node --test test/*.test.ts",
+		"check": "pnpm run typecheck && biome check src scripts test package.json tsconfig.json biome.json && pnpm run test"
+	},
+	"dependencies": {
+		"@bjornpagen/bumbledb": "0.19.2",
+		"@bjornpagen/bumbledb-darwin-arm64": "0.19.2",
+		"@effect/platform-node": "4.0.0-rc.111",
+		"effect": "4.0.0-rc.111"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.10",
+		"@types/node": "26.2.0",
+		"arkregex": "0.0.8",
+		"typescript": "7.0.2",
+		"typescript-api": "npm:typescript@6.0.3"
+	}
+}

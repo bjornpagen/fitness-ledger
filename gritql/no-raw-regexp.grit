@@ -1,0 +1,9 @@
+language js
+
+or {
+	`new RegExp($...)` as $raw,
+	`RegExp($...)` as $raw,
+	JsRegexLiteralExpression() as $raw
+} where {
+	register_diagnostic(span=$raw, message="Raw regular expressions are banned. Compile the pattern with arkregex `regex()`.", severity="error")
+}

@@ -1,0 +1,9 @@
+language js
+
+or {
+	`import($_)`,
+	`require($_)`,
+	`createRequire($_)`
+} as $use where {
+	register_diagnostic(span=$use, message="Dynamic loading and CommonJS escapes are banned. Use a static ESM import.", severity="error")
+}

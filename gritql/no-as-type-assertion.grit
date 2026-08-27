@@ -1,0 +1,6 @@
+language js
+
+`$_ as $_` as $assertion where {
+	not ($assertion <: `$_ as const`),
+	register_diagnostic(span=$assertion, message="Type assertions are banned. Decode unknown values with Effect Schema or prove the type by narrowing. Only `as const` is allowed.", severity="error")
+}

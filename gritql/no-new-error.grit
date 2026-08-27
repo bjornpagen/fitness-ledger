@@ -1,0 +1,15 @@
+language js
+
+or {
+	`new Error($...)` as $error,
+	`new TypeError($...)` as $error,
+	`new RangeError($...)` as $error,
+	`new EvalError($...)` as $error,
+	`new ReferenceError($...)` as $error,
+	`new SyntaxError($...)` as $error,
+	`new URIError($...)` as $error,
+	`new AggregateError($...)` as $error,
+	`new SuppressedError($...)` as $error
+} where {
+	register_diagnostic(span=$error, message="Do not construct Error or an Error subclass. Use an Effect tagged error for expected failures.", severity="error")
+}

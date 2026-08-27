@@ -1,0 +1,11 @@
+language js
+
+or {
+	`try { $_ } catch ($_) { $_ } finally { $_ }`,
+	`try { $_ } catch { $_ } finally { $_ }`,
+	`try { $_ } catch ($_) { $_ }`,
+	`try { $_ } catch { $_ }`,
+	`try { $_ } finally { $_ }`
+} as $statement where {
+	register_diagnostic(span=$statement, message="Raw try statements are banned. Capture fallible work with Effect.try or Effect.tryPromise and scope cleanup with Effect.", severity="error")
+}
