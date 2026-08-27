@@ -145,7 +145,7 @@ Extension and flexion are the complete neck prescription. Lateral flexion and ro
 
 ## Geometry and initial resistance calibration
 
-Height cannot determine a pin or adjustment hole. Begin near the middle of an adjustment range, then move one mark at a time until the machine path and relevant joints align. Record actual seat, back, thigh, chest, footrest, range, or slide marks as personal effective-dated setup observations.
+Height cannot determine a resistance position or machine-slot position. Begin near the middle of an adjustment range, then move one mark at a time until the machine path and relevant joints align. Record only the applicable, observed machine-slot positions on each work set. A position may change between sets; an omitted or irrelevant slot remains absent.
 
 When establishing a new selector exercise:
 
@@ -157,7 +157,7 @@ When establishing a new selector exercise:
 
 This is one-time calibration, not a recurring preliminary sequence. D-series selectors are ordinal positions because cams, lever arms, cables, and an unknown top-plate mass prevent a valid output-pound conversion. The CL-2403 factory chart is the sole exception: pin 1 is 47 lb and each step adds 23 lb of stated actual resistance.
 
-The TSC movements do not use this load ladder. For neck extension and flexion, record the observed 45° bench mark and yoga-block placement as personal setup facts.
+The TSC movements do not use this load ladder. The adjustable bench is not identified to a verified slot/mark domain, and yoga-block placement is execution technique rather than a machine slot; do not invent setup facts for either.
 
 ## E-bike operating sequence
 
@@ -186,15 +186,16 @@ WHOOP sleep need, debt, efficiency, stages, performance, recovery, and strain ca
 
 ## Data boundary and review
 
-The TypeScript prescription describes what should happen. BumbleDB contains only personal data:
+The TypeScript prescription describes what should happen. BumbleDB contains a fixed semantic roster plus personal data:
 
+- machine, slot, and exercise-slot applicability roster facts;
 - profile;
-- observed strength/e-bike activities and concrete dynamic or TSC work sets;
-- observed effective setup marks;
+- observed strength/e-bike completion events and concrete dynamic or TSC work sets;
+- applicable machine-slot positions attached to the sets on which they were used;
 - sleep intervals, body weight, and waist;
-- WHOOP UUIDs, exact intervals/offsets, average/max HR, six integer zone durations, and nap classification.
+- independent WHOOP UUID evidence, exact intervals/offsets, average/max HR, six integer zone durations, explicit activity links, and nap classification.
 
-It contains no machine catalog, recurring schedule, workout template, caffeine rule, e-bike recipe, research provenance, completed/missed state, or proprietary WHOOP score. Partial sessions contain only work that occurred.
+It contains no recurring schedule, workout template, caffeine rule, e-bike recipe, research provenance, completed/missed state, or proprietary WHOOP score. Partial sessions contain only work and settings that occurred.
 
 Review facts, not vendor projections: load/repetition trends, technique-stable effort estimates, pain, Zone 2 duration, sleep intervals, and setup changes.
 

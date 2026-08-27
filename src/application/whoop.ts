@@ -1,14 +1,11 @@
 import type { FitnessDatabase } from "#application/database.ts"
 import {
-	Activity,
-	EBikeActivity,
 	HeartRateSummary,
 	HeartRateZoneDuration,
 	Person,
 	SleepInterval,
-	StrengthActivity,
 	WhoopSleepIdentity,
-	WhoopWorkoutIdentity
+	WhoopWorkout
 } from "#application/schema.ts"
 import { parseInstantSpan, parseTimezoneDesignator } from "#mechanism/dates.ts"
 import { failFitnessLedger } from "#mechanism/failure.ts"
@@ -66,46 +63,26 @@ export function syncWhoopSnapshot(database: FitnessDatabase, snapshot: WhoopSnap
 		}
 		const externalId = uuidBytes(record.id)
 		const state = database.read((instance) => ({
-			identities: instance.scan(WhoopWorkoutIdentity),
-			activities: instance.scan(Activity),
-			summaries: instance.scan(HeartRateSummary)
+			workouts: instance.scan(WhoopWorkout)
 		}))
-		if (state.identities.some((identity) => bytesEqual(identity.externalId, externalId))) {
+		if (state.workouts.some((workout) => bytesEqual(workout.externalId, externalId))) {
 			workoutsSkipped += 1
 			continue
 		}
 		const span = parseInstantSpan(record.start, record.end)
-		const existing = state.activities.find(
-			(activity) =>
-				activity.person === person.id && activity.span.start === span.start && activity.span.end === span.end
-		)
-		if (existing !== undefined && existing.kind !== record.kind) {
-			return failFitnessLedger(
-				`WHOOP ${record.id} is ${record.kind}, but its exact activity interval is already ${existing.kind}`
-			)
-		}
-		if (existing !== undefined && state.summaries.some((summary) => summary.activity === existing.id)) {
-			return failFitnessLedger(`activity ${existing.id} already has a heart-rate summary but no WHOOP identity`)
-		}
 		const outcome = database.write((transaction) => {
-			const activity = existing?.id ?? idAt(transaction.reserve(Activity, "id", 1n), "activity id")
-			if (existing === undefined) {
-				transaction.insert(Activity, [
-					{
-						id: activity,
-						person: person.id,
-						kind: record.kind,
-						span,
-						timezoneOffsetMinutes: parseTimezoneDesignator(record.timezoneOffset)
-					}
-				])
-				if (record.kind === "Strength") transaction.insert(StrengthActivity, [{ activity }])
-				else transaction.insert(EBikeActivity, [{ activity }])
-			}
-			transaction.insert(WhoopWorkoutIdentity, [{ activity, externalId }])
+			transaction.insert(WhoopWorkout, [
+				{
+					externalId,
+					person: person.id,
+					kind: record.kind,
+					span,
+					timezoneOffsetMinutes: parseTimezoneDesignator(record.timezoneOffset)
+				}
+			])
 			transaction.insert(HeartRateSummary, [
 				{
-					activity,
+					externalId,
 					averageBpm: BigInt(record.averageHeartRate),
 					maxBpm: BigInt(record.maxHeartRate),
 					zones: { start: 0n, end: 6n }
@@ -114,12 +91,11 @@ export function syncWhoopSnapshot(database: FitnessDatabase, snapshot: WhoopSnap
 			transaction.insert(
 				HeartRateZoneDuration,
 				record.zoneMilliseconds.map((milliseconds, zone) => ({
-					activity,
+					externalId,
 					zone: { start: BigInt(zone), end: BigInt(zone + 1) },
 					milliseconds: BigInt(milliseconds)
 				}))
 			)
-			return activity
 		})
 		if (outcome.tag !== "accepted") reject(outcome)
 		workoutsImported += 1

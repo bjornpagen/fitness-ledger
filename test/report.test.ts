@@ -84,10 +84,11 @@ Recorded work sets: 0
 Sleep intervals: 0
 Latest body weight: none
 Latest waist: none
-Effective setup settings: 0
+Recorded work-set machine settings: 0
 WHOOP heart-rate summaries: 0
-WHOOP workout identities: 0
+WHOOP workouts: 0
+Activity–WHOOP links: 0
 WHOOP sleep identities: 0
-Latest activity: none`
+Latest activity completion: none`
 	)
 })

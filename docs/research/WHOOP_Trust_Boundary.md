@@ -12,7 +12,7 @@ API specification inspected August 26, 2026: [WHOOP OpenAPI JSON](https://api.pr
 
 | WHOOP field | Stored representation | Reason |
 |---|---|---|
-| Workout/sleep `id` | 16-byte UUID | Idempotency only |
+| Workout/sleep `id` | 16-byte UUID | Provider identity, provenance, and idempotency |
 | `start`, `end` | Half-open absolute interval | Observed temporal fact |
 | `timezone_offset` | Signed offset minutes | Local context at observation |
 | `average_heart_rate` | Integer bpm | Direct summary of captured HR |
@@ -37,7 +37,7 @@ These fields never enter the decoded TypeScript value passed to the database. Te
 
 `pnpm whoop:sync -- <start> <end>` fetches only `/v2/activity/workout` and `/v2/activity/sleep`. It does not call cycle or recovery endpoints. Only scored workouts with an explicitly recognized strength/cycling sport name receive HR summaries; unscored or unrelated sports are skipped.
 
-An imported UUID is unique. Re-importing the same record is a no-op. If a BumbleDB activity already has the exact person/time interval and compatible kind, WHOOP attaches the summary instead of duplicating the activity. Conflicting activity truth is rejected rather than guessed together.
+An imported UUID is unique. Re-importing the same record is a no-op. A workout import creates independent `WhoopWorkout` evidence and heart-rate facts; it never creates, interval-matches, or merges a conversational `Activity`. The chatbot disambiguates the user's context and writes an explicit one-to-one `ActivityWhoopWorkout` link only when warranted.
 
 Credentials come from `WHOOP_ACCESS_TOKEN` in the invoking process environment. No token, refresh credential, user ID or secret file belongs in the repository.
 

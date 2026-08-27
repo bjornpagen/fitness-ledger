@@ -26,20 +26,24 @@ Translate the supplied facts directly into one typed BumbleDB transaction. The a
 
 | Observation | Parent and subtype facts | Required supplied values |
 |---|---|---|
-| Strength session | `Activity` + `StrengthActivity` + work-set rows | exact start/end with UTC offset; each exercise, set order, result, and pain |
-| Selector set | `SelectorWorkSet` | exercise, order, repetitions, RIR, pain, ordinal position |
-| Dumbbell set | `DumbbellWorkSet` | exercise, order, repetitions, RIR, pain, tenths of a pound per hand |
-| Neck TSC | `TscWorkSet` | exercise, order, actual duration, pain |
-| E-bike ride | `Activity` + `EBikeActivity` | exact start/end with UTC offset |
+| Strength session | `Activity` + `StrengthActivity` + `WorkSet` parents and load-specific children | actual completion instant, honest precision, UTC offset; each exercise, set order, result, and pain |
+| Selector set | `WorkSet` + `SelectorWorkSet` | exercise, order, repetitions, RIR, pain, resistance position |
+| Dumbbell set | `WorkSet` + `DumbbellWorkSet` | exercise, order, repetitions, RIR, pain, tenths of a pound per hand |
+| Neck TSC | `WorkSet` + `TscWorkSet` | exercise, order, actual duration, pain |
+| E-bike ride | `Activity` + `EBikeActivity` | actual completion instant, honest precision, and UTC offset |
 | Sleep | `SleepInterval` | exact start/end with UTC offset and nap classification |
 | Body weight | `Measurement` + `BodyWeightMeasurement` | observation instant and tenths of a pound |
 | Waist | `Measurement` + `WaistMeasurement` | observation instant and tenths of an inch |
-| Machine setup | `SetupSetting` | exercise, adjustment kind, observed value, non-overlapping validity interval |
+| Machine setting | `MachineSlotPosition` + `WorkSetMachineSetting` | work set, its exercise, applicable machine slot, and observed ordinal position |
 
-Use `parseInstantSpan` and `timezoneOffsetMinutes` for timestamped activities. Read the single `Person` fact to obtain the private person ID. Reserve fresh IDs inside the same transaction and insert the parent, subtype, and child facts atomically. If required information is absent, ask only for that information; do not fill it with a default. Report BumbleDB rejections instead of bypassing the theory.
+An activity's `completedAt` is the actual completion event, never database commit time. A chat timestamp is usable only when the utterance itself means completion, such as “just finished.” Preserve minute precision as `completedAtPrecision: "Minute"`; use `"Millisecond"` only for a genuinely millisecond-precise event. Do not invent a start or duration.
+
+Read the single `Person` fact to obtain the private person ID. Reserve fresh activity and work-set IDs inside one transaction, then insert every `WorkSet` with exactly the child selected by its `loadKind`. Pain belongs to the parent. If required information is absent, ask only for that information; do not fill it with a default. Report BumbleDB rejections instead of bypassing the theory.
+
+Machine slots belong to machines, and `ExerciseMachineSlot` is only an applicability whitelist. No exercise requires every applicable slot to be recorded. Insert a `MachineSlotPosition` only for a printed or otherwise defined ordinal actually supplied by the user, then attach it to the relevant set with `WorkSetMachineSetting`. A setting stated once may carry forward within the active conversational workout until changed; a change such as “seat 2” creates a new row on the later set. Never copy a historical setting into a new session, invent an irrelevant value, or turn omitted settings into facts. Resistance remains separate in `SelectorWorkSet.resistancePosition`.
 
 Executable direct-transaction examples live in `test/schema.test.ts`; WHOOP import examples live in `test/whoop.test.ts`. These are examples of BumbleDB itself, not an alternate recording layer.
 
-WHOOP ingestion uses `pnpm whoop:sync -- <start> <end>` with `WHOOP_ACCESS_TOKEN` supplied only in the process environment. Accept only the narrow fields defined in [WHOOP_Trust_Boundary.md](research/WHOOP_Trust_Boundary.md). Never let WHOOP-derived scores alter the policy.
+WHOOP ingestion uses `pnpm whoop:sync -- <start> <end>` with `WHOOP_ACCESS_TOKEN` supplied only in the process environment. It writes independent `WhoopWorkout` evidence and heart-rate facts, never an `Activity`. The chatbot must disambiguate the conversational context and explicitly create the one-to-one `ActivityWhoopWorkout` link; synchronization never fuzzy-matches intervals. Accept only the narrow fields defined in [WHOOP_Trust_Boundary.md](research/WHOOP_Trust_Boundary.md). Never let WHOOP-derived scores alter the policy.
 
 After a write, read the inserted facts back and summarize exactly what was accepted. Do not create a commit for personal observations because the database is ignored private state.

@@ -15,7 +15,7 @@
 - Keep the fixed 11-exercise prescription free of general warm-ups, cardio warm-ups, and ramp-set subsystems.
 - Store reality, not projections: no completed/missed flags, readiness/recovery scores, calendar-driven progression, or WHOOP-derived coaching.
 - WHOOP may contribute only UUID identity, exact intervals/offsets, average/max HR, integer zone durations, and nap classification.
-- Never invent selector pins, setup marks, D-series pounds, or machine identities. Effective setup settings are observed body-fit coordinates; `SelectorWorkSet.position` is historical resistance.
+- Never invent selector pins, machine-slot positions, D-series pounds, or machine identities. Work-set machine settings are observed body-fit coordinates; `SelectorWorkSet.resistancePosition` is historical resistance.
 - Exercise order, set count, and progression remain policy rather than duplicated database state. A next-session resistance is computed from actual sets and policy, never stored as mutable truth.
 - Full source binaries live in `private/sources/`. Public `sources/` contains only catalogs and canonical references. Rebuild searchable derivatives with `pnpm sources:extract-text`.
 - Do not add hidden files or hidden directories beyond existing Git/package-manager infrastructure.

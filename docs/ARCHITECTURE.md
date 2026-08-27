@@ -31,7 +31,7 @@ The location of the gym is not a policy input because the application does not n
 `src/application/` is the intentional policy-bearing composition layer:
 
 - `schema.ts` builds the concrete BumbleDB theory from the exercise policy;
-- `database.ts` binds that theory to BumbleDB lifecycle calls;
+- `database.ts` binds that theory to BumbleDB lifecycle calls and initializes the fixed machine-slot roster;
 - `queries.ts` supplies useful typed queries without hiding BumbleDB;
 - `whoop.ts` applies the WHOOP trust policy and writes accepted facts;
 - `report.ts` renders the prescription and observed status;
@@ -46,33 +46,36 @@ Real observations exist only as BumbleDB facts. Agents read with BumbleDB querie
 
 The theory contains:
 
-- sealed value domains for load kind, exercise, adjustment kind, activity kind, measurement kind, and sex;
+- sealed value domains for load kind, exercise, machine, machine slot, activity kind, completion-time precision, measurement kind, and sex;
+- fixed exercise-to-machine-slot applicability roster facts;
 - one private personal profile;
-- strength and e-bike activity intervals;
-- selector, dumbbell, and timed-static work-set facts;
-- effective-dated setup settings;
+- strength and e-bike activity completion events;
+- common work-set parents with exactly one selector, dumbbell, or timed-static child;
+- typed machine-slot positions and optional per-work-set settings;
 - sleep, body-weight, and waist observations;
-- the narrow accepted WHOOP identity and heart-rate subset.
+- independent WHOOP workout evidence, explicit activity links, and the narrow accepted heart-rate subset.
 
-It contains no equipment catalog, routine, schedule, caffeine rule, e-bike recipe, research provenance, completion flag, missed-workout flag, recovery state, or proprietary score.
+It contains no facility inventory, routine, schedule, caffeine rule, e-bike recipe, research provenance, completion flag, missed-workout flag, recovery state, or proprietary score.
 
-### Closed exercise semantics
+### Closed exercise and work-set semantics
 
 `Exercise` is a closed relation with one sealed `loadKind` payload per exercise. Containments target payload-selected subsets:
 
-- `SelectorWorkSet.exercise` can resolve only to selector-position exercises;
-- `DumbbellWorkSet.exercise` can resolve only to dumbbell-pair exercises;
-- `TscWorkSet.exercise` can resolve only to timed-static exercises.
+- a `WorkSet` exercise must agree with its `loadKind`;
+- every parent must have exactly one child selected by that load kind;
+- a child cannot exist without the matching parent.
 
-This keeps intrinsic load shape in the theory while leaving order, set counts, progression, and technique in policy. Changing those programming choices does not reinterpret historical facts.
+The parent owns activity, exercise, within-exercise order, and pain. Selector repetitions/RIR/resistance, dumbbell repetitions/RIR/weight, and timed-static duration live only on their corresponding children. This keeps intrinsic load shape in the theory while leaving exercise order, prescribed set counts, progression, and technique in policy.
 
-### Intervals and identity
+### Activity time and machine geometry
 
-Activities and sleep use exact half-open epoch-millisecond intervals plus the observed UTC offset. Setup settings use effective intervals under a pointwise key of person, exercise, adjustment kind, and validity window, so two values cannot apply to the same coordinate at one instant.
+An `Activity` has one `completedAt` event, its observed UTC offset, and an explicit `Minute` or `Millisecond` precision. It has no inferred start, duration, or policy window. Sleep retains a half-open interval because both bounds can be observations.
 
-Selector resistance is an ordinal position, not pounds. Dumbbell weight is fixed-point tenths of a pound per hand. Timed-static work stores duration and pain only because the setup does not measure force.
+`MachineSlot` defines physical geometry on one machine. `ExerciseMachineSlot` is an applicability whitelist, not a completeness rule. `WorkSetMachineSetting` joins one set to an applicable slot and a known slot-position pair, keyed so a set cannot have two values for one slot. Settings may vary between sets and omitted settings remain absent. The adjustable bench is unidentified, and yoga-block placement is exercise technique rather than an invented machine slot.
 
-WHOOP UUID relations provide import idempotency. Heart-rate summaries mirror an exact six-slot `[0, 6)` zone partition. Strain, recovery, energy, distance, altitude, sleep scores/stages/need/debt/efficiency, and coaching recommendations never enter the theory.
+Selector resistance is a separate ordinal `resistancePosition`, not geometry or pounds. Dumbbell weight is fixed-point tenths of a pound per hand. Timed-static work stores duration and pain only because the setup does not measure force.
+
+`WhoopWorkout` retains the provider's UUID, exact interval/offset, classified kind, and person independently of conversational activities. Import never creates or fuzzy-matches an `Activity`; `ActivityWhoopWorkout` is an explicit one-to-one disambiguation. Heart-rate summaries refer to WHOOP evidence and mirror an exact six-slot `[0, 6)` zone partition. Strain, recovery, energy, distance, altitude, sleep scores/stages/need/debt/efficiency, and coaching recommendations never enter the theory.
 
 ## Private distribution layer
 
@@ -82,6 +85,6 @@ The public repository remains buildable without this directory. Restoring an aut
 
 ## Store lifecycle
 
-BumbleDB fingerprints the complete theory and refuses to reinterpret an incompatible store. A theory change uses an explicit extract-transform-load into a fresh store; an incompatible store is never silently reinterpreted.
+BumbleDB fingerprints the complete theory and refuses to reinterpret an incompatible store. This is a hard cutover: old stores are intentionally incompatible, and the application contains no compatibility or migration layer.
 
 `pnpm check` typechecks, runs Biome with the repository GritQL rules, and executes the theory, query, WHOOP, timing, prescription, architecture, and stale-decision tests.

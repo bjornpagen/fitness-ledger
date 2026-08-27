@@ -91,29 +91,32 @@ Height supports one conclusion: begin near the middle of the geometry range. It 
 ### D-400 seated leg curl
 
 - Align the knee with the swing-arm pivot.
-- Place the moving roller against the lower calf and make the thigh restraint snug.
-- Retain a slight knee bend at the start instead of hyperextending.
-- Keep feet neutral. Save seat, thigh, and range marks present on the actual unit.
+- Adjust the back pad to support the seated position.
+- Set the starting-range/cam selector for a slight knee bend rather than hyperextension.
+- Place the lower-leg roller against the lower calf and make the thigh-stabilization roller snug.
+- Keep feet neutral. Save the back-pad, starting-range/cam, lower-leg-roller, and thigh-stabilization-roller positions actually used.
+
+These names are mechanically specific. The lower-leg roller is not a footrest, and the starting-range/cam selector is not an “other” or “knee-wheel” setting.
 
 ### D-600 lower back and abdominal
 
 - Set the footrest and pads so the body cannot slide as resistance begins.
-- Select a conservative start/range mark and test a pain-free arc before load calibration.
+- Select a conservative starting-range/cam position and test a pain-free arc before load calibration.
 - Lower-back work stops before end-range hyperextension; abdominal work uses trunk flexion rather than arm pulling.
-- Record geometry separately for the two machine functions.
+- Record the footrest and starting-range/cam positions separately for the two machine functions.
 
 ### Back-supported dumbbell overhead press
 
 - Use a high bench back and a neutral grip.
 - Select the bench angle and seat position that keep ribs/pelvis stable and permit a pain-free bottom position.
-- Record bench marks as setup facts. Dumbbell pounds are per hand.
+- The adjustable bench remains unidentified, so no bench slot or mark domain is sealed in the ledger. Dumbbell pounds are per hand.
 
 ### Timed static neck extension and flexion
 
 - Bring one dedicated yoga block and use the same adjustable bench for both movements at 45 degrees.
 - For extension, lie face-up with the block centered under the back of the head and press backward while the neutral head and torso remain still.
 - For flexion, lie face-down, support body weight through the arms, center the forehead on the block, and press into it while the neutral head and torso remain still.
-- Record the bench angle and yoga-block placement as setup facts. Do not infer force, pounds, or RIR from the 90-second contraction.
+- Bench angle and yoga-block placement remain fixed execution technique, not machine-slot facts. Do not infer force, pounds, or RIR from the 90-second contraction.
 
 ## Conservative load calibration
 

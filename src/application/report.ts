@@ -1,18 +1,17 @@
 import type { FitnessDatabase } from "#application/database.ts"
 import {
 	Activity,
+	ActivityWhoopWorkout,
 	BodyWeightMeasurement,
-	DumbbellWorkSet,
 	HeartRateSummary,
 	Measurement,
 	Person,
-	SelectorWorkSet,
-	SetupSetting,
 	SleepInterval,
-	TscWorkSet,
 	WaistMeasurement,
 	WhoopSleepIdentity,
-	WhoopWorkoutIdentity
+	WhoopWorkout,
+	WorkSet,
+	WorkSetMachineSetting
 } from "#application/schema.ts"
 import { formatEpochDay, formatInstant, localMinuteToClock } from "#mechanism/dates.ts"
 import { failFitnessLedger } from "#mechanism/failure.ts"
@@ -108,7 +107,7 @@ export function renderPlan(): string {
 export function renderStatus(database: FitnessDatabase): string {
 	return database.read((instance) => {
 		const person = one(instance.scan(Person), "person")
-		const activities = instance.scan(Activity).sort((left, right) => Number(left.span.start - right.span.start))
+		const activities = instance.scan(Activity).sort((left, right) => Number(left.completedAt - right.completedAt))
 		const measurements = instance.scan(Measurement).sort((left, right) => Number(left.observedAt - right.observedAt))
 		const bodyWeights = new Map(
 			instance.scan(BodyWeightMeasurement).map((value) => [value.measurement, value.tenthsLb])
@@ -121,8 +120,8 @@ export function renderStatus(database: FitnessDatabase): string {
 		const heightRemainder = heightInches % 12n
 		const formatTenths = (value: bigint | undefined, unit: string): string =>
 			value === undefined ? "none" : `${value / 10n}.${value % 10n} ${unit}`
-		const workSets = instance.count(SelectorWorkSet) + instance.count(DumbbellWorkSet) + instance.count(TscWorkSet)
-		const setupSettings = instance.count(SetupSetting)
+		const workSets = instance.count(WorkSet)
+		const machineSettings = instance.count(WorkSetMachineSetting)
 		return [
 			"Fitness ledger status",
 			`Person: ${person.name} (${heightFeet} ft ${heightRemainder} in, born ${formatEpochDay(person.birthDateEpochDay)}, ${person.sex})`,
@@ -133,11 +132,12 @@ export function renderStatus(database: FitnessDatabase): string {
 			`Sleep intervals: ${instance.count(SleepInterval)}`,
 			`Latest body weight: ${formatTenths(latestWeight === undefined ? undefined : bodyWeights.get(latestWeight.id), "lb")}`,
 			`Latest waist: ${formatTenths(latestWaist === undefined ? undefined : waists.get(latestWaist.id), "in")}`,
-			`Effective setup settings: ${setupSettings}`,
+			`Recorded work-set machine settings: ${machineSettings}`,
 			`WHOOP heart-rate summaries: ${instance.count(HeartRateSummary)}`,
-			`WHOOP workout identities: ${instance.count(WhoopWorkoutIdentity)}`,
+			`WHOOP workouts: ${instance.count(WhoopWorkout)}`,
+			`Activity–WHOOP links: ${instance.count(ActivityWhoopWorkout)}`,
 			`WHOOP sleep identities: ${instance.count(WhoopSleepIdentity)}`,
-			`Latest activity: ${activities.at(-1) === undefined ? "none" : formatInstant(activities.at(-1)?.span.start ?? 0n)}`
+			`Latest activity completion: ${activities.at(-1) === undefined ? "none" : formatInstant(activities.at(-1)?.completedAt ?? 0n)}`
 		].join("\n")
 	})
 }

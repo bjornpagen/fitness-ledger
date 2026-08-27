@@ -2,15 +2,18 @@ import assert from "node:assert/strict"
 import test from "node:test"
 import {
 	Activity,
+	ActivityWhoopWorkout,
+	EBikeActivity,
 	HeartRateSummary,
 	HeartRateZoneDuration,
+	Person,
 	SleepInterval,
 	WhoopSleepIdentity,
-	WhoopWorkoutIdentity
+	WhoopWorkout
 } from "#application/schema.ts"
 import { syncWhoopSnapshot } from "#application/whoop.ts"
 import { decodeWhoopSleepPage, decodeWhoopWorkoutPage } from "#mechanism/whoop-client.ts"
-import { testDatabase } from "./helpers.ts"
+import { reserved, testDatabase } from "./helpers.ts"
 
 const workoutPayload = {
 	records: [
@@ -87,7 +90,7 @@ test("WHOOP decoding keeps only the explicit trust boundary", () => {
 	assert.equal(Object.hasOwn(sleep, "cycle_id"), false)
 })
 
-test("WHOOP sync is idempotent and stores a six-slot HR partition", async () => {
+test("WHOOP sync is idempotent provider evidence and stores a six-slot HR partition", async () => {
 	const database = await testDatabase("fitness-ledger-whoop-")
 	const snapshot = {
 		workouts: decodeWhoopWorkoutPage(workoutPayload).records,
@@ -107,17 +110,17 @@ test("WHOOP sync is idempotent and stores a six-slot HR partition", async () => 
 	})
 	const counts = database.read((instance) => ({
 		activities: instance.count(Activity),
+		workouts: instance.count(WhoopWorkout),
 		summaries: instance.count(HeartRateSummary),
 		zones: instance.count(HeartRateZoneDuration),
-		workoutIds: instance.count(WhoopWorkoutIdentity),
 		sleeps: instance.count(SleepInterval),
 		sleepIds: instance.count(WhoopSleepIdentity),
 		zoneRows: instance.scan(HeartRateZoneDuration).sort((left, right) => Number(left.zone.start - right.zone.start))
 	}))
-	assert.equal(counts.activities, 1n)
+	assert.equal(counts.activities, 0n)
+	assert.equal(counts.workouts, 1n)
 	assert.equal(counts.summaries, 1n)
 	assert.equal(counts.zones, 6n)
-	assert.equal(counts.workoutIds, 1n)
 	assert.equal(counts.sleeps, 1n)
 	assert.equal(counts.sleepIds, 1n)
 	assert.deepEqual(
@@ -128,4 +131,71 @@ test("WHOOP sync is idempotent and stores a six-slot HR partition", async () => 
 	assert.ok(firstZone !== undefined)
 	const missingZone = database.write((transaction) => transaction.delete(HeartRateZoneDuration, [firstZone]))
 	assert.equal(missingZone.tag, "rejected")
+})
+
+test("a conversational activity links explicitly and one-to-one to WHOOP evidence", async () => {
+	const database = await testDatabase("fitness-ledger-whoop-link-")
+	const snapshot = {
+		workouts: decodeWhoopWorkoutPage(workoutPayload).records,
+		sleeps: []
+	}
+	syncWhoopSnapshot(database, snapshot)
+	const state = database.read((instance) => ({
+		person: instance.scan(Person)[0],
+		workout: instance.scan(WhoopWorkout)[0]
+	}))
+	const person = state.person
+	const workout = state.workout
+	assert.ok(person !== undefined && workout !== undefined)
+	const first = database.write((transaction) => {
+		const activity = reserved(transaction.reserve(Activity, "id", 1n).at(0n))
+		transaction.insert(Activity, [
+			{
+				id: activity,
+				person: person.id,
+				kind: "EBike",
+				completedAt: workout.span.end,
+				completedAtPrecision: "Millisecond",
+				timezoneOffsetMinutes: workout.timezoneOffsetMinutes
+			}
+		])
+		transaction.insert(EBikeActivity, [{ activity }])
+		transaction.insert(ActivityWhoopWorkout, [{ activity, externalId: workout.externalId }])
+		return activity
+	})
+	assert.equal(first.tag, "accepted")
+	if (first.tag !== "accepted") return
+
+	const duplicateProviderLink = database.write((transaction) => {
+		const activity = reserved(transaction.reserve(Activity, "id", 1n).at(0n))
+		transaction.insert(Activity, [
+			{
+				id: activity,
+				person: person.id,
+				kind: "EBike",
+				completedAt: workout.span.end + 1n,
+				completedAtPrecision: "Millisecond",
+				timezoneOffsetMinutes: workout.timezoneOffsetMinutes
+			}
+		])
+		transaction.insert(EBikeActivity, [{ activity }])
+		transaction.insert(ActivityWhoopWorkout, [{ activity, externalId: workout.externalId }])
+	})
+	assert.equal(duplicateProviderLink.tag, "rejected")
+
+	const otherExternalId = Uint8Array.from(workout.externalId)
+	otherExternalId[15] = (otherExternalId[15] ?? 0) ^ 1
+	const duplicateActivityLink = database.write((transaction) => {
+		transaction.insert(WhoopWorkout, [
+			{
+				externalId: otherExternalId,
+				person: person.id,
+				kind: "EBike",
+				span: { start: workout.span.start + 1n, end: workout.span.end + 1n },
+				timezoneOffsetMinutes: workout.timezoneOffsetMinutes
+			}
+		])
+		transaction.insert(ActivityWhoopWorkout, [{ activity: first.value.value, externalId: otherExternalId }])
+	})
+	assert.equal(duplicateActivityLink.tag, "rejected")
 })
