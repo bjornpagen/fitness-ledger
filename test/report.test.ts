@@ -7,8 +7,26 @@ import { testDatabase } from "./helpers.ts"
 test("the plan renders the fixed schedule and complete eleven-exercise order", () => {
 	const plan = renderPlan()
 	assert.equal(plan.includes("Wake 06:30 and immediately take 200 mg caffeine"), true)
-	assert.equal(plan.includes("Strength: Monday and Thursday, 07:00–08:00"), true)
-	assert.equal(plan.includes("E-bike: Tuesday, Friday, and Saturday, 07:00–08:00"), true)
+	assert.equal(
+		plan.includes(
+			"Strength: Monday and Thursday, start 07:00; finish after the complete prescription with no session-duration limit."
+		),
+		true
+	)
+	assert.equal(plan.includes("E-bike: Tuesday, Friday, and Saturday, start 07:00; 60 prescribed minutes."), true)
+	assert.equal(
+		plan.includes(
+			"Each dynamic repetition uses 5 seconds for the positive phase, a smooth continuous turnaround with no deliberate pause, and 5 seconds for the negative phase."
+		),
+		true
+	)
+	assert.equal(plan.includes("2 sets × 5–8 reps — target about 2 RIR — 5s positive / 5s negative"), true)
+	assert.equal(plan.includes("If the increased resistance prevents 5 clean reps"), true)
+	assert.equal(plan.includes("45-degree bench timed static neck flexion — 1 set × 90s TSC"), true)
+	assert.equal(plan.includes("hard but safe) — workout ends — Adjustable bench"), true)
+	assert.equal(plan.includes("07:00–08:00"), false)
+	assert.equal(plan.includes("2-1-2"), false)
+	assert.equal(plan.includes("8–12"), false)
 	assert.equal(plan.includes("50 minutes in WHOOP Zone 2"), true)
 	assert.equal(plan.includes("dorsiflexion"), false)
 	for (const exercise of prescription.strength.exerciseOrder) {
@@ -34,6 +52,23 @@ test("exercise order is explicitly slotted one through eleven", () => {
 			[11, "bench-tsc-neck-flexion"]
 		]
 	)
+})
+
+test("strength policy fixes five-second phases without imposing an end time", () => {
+	assert.equal(prescription.strength.repetitionMinimum, 5)
+	assert.equal(prescription.strength.repetitionMaximum, 8)
+	assert.deepEqual(prescription.strength.cadence, {
+		positiveSeconds: 5,
+		negativeSeconds: 5,
+		turnaround: "smooth-unpaused"
+	})
+	assert.deepEqual(prescription.strengthStarts, [
+		{ day: "Monday", startMinute: 420 },
+		{ day: "Thursday", startMinute: 420 }
+	])
+	for (const start of [...prescription.strengthStarts, ...prescription.eBikeStarts]) {
+		assert.equal(Object.hasOwn(start, "endMinute"), false)
+	}
 })
 
 test("status reports only stored facts", async () => {

@@ -10,7 +10,7 @@
 - `src/application/schema.ts` is the authoritative BumbleDB theory. A fingerprint change requires fresh-store ETL.
 - BumbleDB is the only store for real personal observations. Write facts with typed transactions; do not add a second observation representation.
 - Agents use `src/ledger.ts`, BumbleDB queries, and typed transactions directly.
-- Keep the fixed America/Chicago routine intact: strength Monday/Thursday 07:00–08:00, e-bike Tuesday/Friday/Saturday 07:00–08:00, and daily 22:00–06:30 sleep opportunity.
+- Keep the fixed America/Chicago routine intact: strength Monday/Thursday starts at 07:00 with no session-duration limit, e-bike Tuesday/Friday/Saturday starts at 07:00 and follows its prescribed 60-minute structure, and the daily sleep opportunity is 22:00–06:30.
 - Keep the 06:30 200 mg caffeine dose, 14:30 cutoff, identical eleven-exercise workout, dynamic set/repetition/target-RIR/cadence/rest prescription, 30/30/30 neck TSC protocol, and dynamic load-progression rule intact.
 - Keep the fixed 11-exercise prescription free of general warm-ups, cardio warm-ups, and ramp-set subsystems.
 - Store reality, not projections: no completed/missed flags, readiness/recovery scores, calendar-driven progression, or WHOOP-derived coaching.

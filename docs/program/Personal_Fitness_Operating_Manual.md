@@ -19,27 +19,29 @@ Every day:
 - 21:15: wind-down begins.
 - 22:00: lights out.
 
-Training is 07:00–08:00: strength Monday and Thursday; e-bike Tuesday, Friday, and Saturday. Wednesday and Sunday contain no training. An absence does not move the sequence; resume on the next scheduled day.
+Strength starts at 07:00 Monday and Thursday. E-bike riding starts at 07:00 Tuesday, Friday, and Saturday. Wednesday and Sunday contain no training. An absence does not move the sequence; resume on the next scheduled day.
+
+The strength start time creates no end time or duration limit. Complete all prescribed sets, transitions, and rests without rushing or dropping work to meet a clock deadline. The e-bike session has a 60-minute duration because its prescribed 5-minute easy, 50-minute Zone 2, and 5-minute easy segments total 60 minutes.
 
 The sleep opportunity is eight hours and thirty minutes. Wall-clock anchors remain fixed across daylight-saving transitions, while recorded absolute intervals honestly reflect the resulting seven-and-a-half- or nine-and-a-half-hour transition night. Both training modes use 07:00 to place exercise soon after waking; research does not establish a universally superior training time.
 
 ## Strength operating sequence
 
-Begin with the first prescribed work set. There is no general cardio preparation and no separately prescribed ramp set. Dynamic work uses familiar, stable equipment and moderate 8–12-repetition loads rather than maximal or explosive lifting. Each TSC begins with its own gradual moderate-effort phase. The available warm-muscle meta-analysis found improvement in rate-dependent force properties but not maximum force and does not establish that a separate generalized sequence would improve this workout or prevent injury.
+Begin with the first prescribed work set. There is no general cardio preparation and no separately prescribed ramp set. Dynamic work uses familiar, stable equipment and 5–8 slow controlled repetitions rather than maximal or explosive lifting. Each TSC begins with its own gradual moderate-effort phase. The available warm-muscle meta-analysis found improvement in rate-dependent force properties but not maximum force and does not establish that a separate generalized sequence would improve this workout or prevent injury.
 
 ### Identical Monday/Thursday workout
 
 | Order | Exercise | Work prescription | Rest |
 |---:|---|---|---:|
-| 1 | CL-2403 leg press | 2 × 8–12 at about 2 RIR | 120 s |
-| 2 | D-200 close-underhand front pulldown | 2 × 8–12 at about 2 RIR | 120 s |
-| 3 | D-300 horizontal chest press | 2 × 8–12 at about 2 RIR | 120 s |
-| 4 | D-200 chest-supported mid-row | 2 × 8–12 at about 2 RIR | 120 s |
-| 5 | Back-supported neutral-grip DB overhead press | 2 × 8–12 at about 2 RIR | 120 s |
-| 6 | D-400 seated leg curl | 2 × 8–12 at about 2 RIR | 120 s |
-| 7 | D-600 lower-back extension | 1 × 8–12 at about 2 RIR | 120 s |
-| 8 | D-600 abdominal flexion | 1 × 8–12 at about 2 RIR | 120 s |
-| 9 | CL-2403 straight-leg calf press | 1 × 8–12 at about 2 RIR | 120 s |
+| 1 | CL-2403 leg press | 2 × 5–8 at about 2 RIR | 120 s |
+| 2 | D-200 close-underhand front pulldown | 2 × 5–8 at about 2 RIR | 120 s |
+| 3 | D-300 horizontal chest press | 2 × 5–8 at about 2 RIR | 120 s |
+| 4 | D-200 chest-supported mid-row | 2 × 5–8 at about 2 RIR | 120 s |
+| 5 | Back-supported neutral-grip DB overhead press | 2 × 5–8 at about 2 RIR | 120 s |
+| 6 | D-400 seated leg curl | 2 × 5–8 at about 2 RIR | 120 s |
+| 7 | D-600 lower-back extension | 1 × 5–8 at about 2 RIR | 120 s |
+| 8 | D-600 abdominal flexion | 1 × 5–8 at about 2 RIR | 120 s |
+| 9 | CL-2403 straight-leg calf press | 1 × 5–8 at about 2 RIR | 120 s |
 | 10 | 45° bench timed static neck extension | 1 × 90 s TSC | 120 s |
 | 11 | 45° bench timed static neck flexion | 1 × 90 s TSC | workout ends |
 
@@ -58,13 +60,13 @@ Keeping this order unchanged also makes load, repetition, and RIR comparisons mo
 
 ### Dynamic repetition standard
 
-Every repetition uses 2 seconds down, a 1-second smooth turnaround, and 2 seconds up. Do not bounce, deliberately throw the load, shorten range as fatigue rises, or move the torso to finish a repetition. The last accepted repetition must remain the same exercise as the first.
+Every repetition uses a 5-second positive/lifting phase and a 5-second negative/lowering phase. Begin the positive phase without jerking. As either endpoint approaches, decelerate into a smooth continuous reversal: there is no scheduled isometric pause, but there is also no bounce, abrupt direction change, hard lockout, or deliberate unloading between repetitions. Do not shorten range as fatigue rises or move the torso to finish a repetition. The last accepted repetition must remain the same exercise as the first.
 
-At this cadence, 8–12 repetitions usually take about 40–60 seconds. That duration is a consequence, not a target. Load, clean repetitions, consistent range, estimated RIR, and pain contain more useful information than a time-under-tension total.
+At this cadence, 5–8 repetitions imply approximately 50–80 seconds of dynamic movement. That arithmetic is a consequence of the cadence, not a time-under-tension target and not a limit on workout duration. Count clean repetitions; do not terminate a technically sound set merely because a stopwatch reaches a particular number. Load, clean repetitions, consistent range, estimated RIR, and pain remain the useful observations.
 
 RIR means additional clean repetitions available without changing technique. Target about 2 RIR; do not claim exact knowledge. End the set before the next repetition would require a changed path, shortened range, bounce, or body-position shift. Do not deliberately train to failure or use set-extension methods.
 
-The fixed 120-second rest is an execution standard, not a claim that 120 seconds is biologically unique. It clears the range where short rests commonly reduce performance while keeping the session compact; the recent hypertrophy meta-analysis found a small benefit above 60 seconds and no appreciable difference beyond roughly 90 seconds.
+The fixed 120-second rest is an execution standard, not a claim that 120 seconds is biologically unique. It clears the range where short rests commonly reduce subsequent performance; the recent hypertrophy meta-analysis found a small benefit above 60 seconds and no appreciable difference beyond roughly 90 seconds. Rest for the full interval even if the workout takes longer as a result.
 
 ### Timed static contraction standard
 
@@ -85,9 +87,9 @@ For each dynamic exercise independently:
 
 1. Preserve setup, range, cadence, and load.
 2. Add clean repetitions while targeting about 2 RIR.
-3. When every prescribed set reaches 12 repetitions at that effort on two consecutive exposures, increase by one selector position or the smallest dumbbell increment.
-4. Expect repetitions to fall toward 8 after the increase.
-5. If the new load prevents 8 clean repetitions, return to the preceding load at the next exposure.
+3. When every prescribed set reaches 8 repetitions at that effort on two consecutive exposures, increase by one selector position or the smallest dumbbell increment.
+4. Expect repetitions to fall toward 5 after the increase.
+5. If the new load prevents 5 clean repetitions, return to the preceding load at the next exposure.
 
 There are no calendar phases. One poor exposure is not a plateau; investigate only a repeated pattern under stable setup, range, sleep opportunity, and honest effort estimates.
 
@@ -148,10 +150,10 @@ Height cannot determine a pin or adjustment hole. Begin near the middle of an ad
 When establishing a new selector exercise:
 
 1. Fix the geometry first.
-2. At position 1, perform 8 plainly easy repetitions.
-3. If at least 6 clean repetitions remain, rest 90 seconds and perform 5 repetitions one position heavier.
+2. At position 1, perform 3 clean repetitions using the prescribed 5-second positive and 5-second negative.
+3. If the probe is plainly easy and at least 5 additional clean repetitions clearly remain, rest 90 seconds and perform another 3-repetition probe one position heavier.
 4. Continue while every test remains easy and identical. Stop before grinding.
-5. Rest 2 minutes and choose the first conservative work position expected to yield 8–12 clean repetitions near the target effort.
+5. Rest 2 minutes and choose a conservative tested position expected to yield 5–8 clean repetitions near the target effort.
 
 This is one-time calibration, not a recurring preliminary sequence. D-series selectors are ordinal positions because cams, lever arms, cables, and an unknown top-plate mass prevent a valid output-pound conversion. The CL-2403 factory chart is the sole exception: pin 1 is 47 lb and each step adds 23 lb of stated actual resistance.
 

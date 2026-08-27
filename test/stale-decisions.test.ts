@@ -27,6 +27,14 @@ const FORBIDDEN = [
 	regex.as<string>("20:00"),
 	regex.as<string>("06:35"),
 	regex.as<string>("3-1-2"),
+	regex.as<string>("2-1-2"),
+	regex.as<string>("8[–-]12"),
+	regex.as<string>("07:00[–-]08:00"),
+	regex.as<string>("strengthWindows"),
+	regex.as<string>("eBikeWindows"),
+	regex.as<string>("endMinute"),
+	regex.as<string>("session budget", "i"),
+	regex.as<string>("fixed one-hour", "i"),
 	regex.as<string>("180s"),
 	regex.as<string>("usual caffeine", "i"),
 	regex.as<string>("WarmupPlan"),
@@ -61,7 +69,10 @@ const FORBIDDEN_CURRENT_RESEARCH = [
 	regex.as<string>("palms-forward grip", "i"),
 	regex.as<string>("4–6 inches wider", "i"),
 	regex.as<string>("\\|\\s*8\\s*\\|\\s*D-600 lower-back extension", "i"),
-	regex.as<string>("\\|\\s*12\\s*\\|\\s*45° bench TSC neck flexion", "i")
+	regex.as<string>("\\|\\s*12\\s*\\|\\s*45° bench TSC neck flexion", "i"),
+	regex.as<string>("2-1-2"),
+	regex.as<string>("8[–-]12"),
+	regex.as<string>("fixed one-hour", "i")
 ] as const
 
 async function filesBelow(relativeDirectory: string): Promise<readonly string[]> {

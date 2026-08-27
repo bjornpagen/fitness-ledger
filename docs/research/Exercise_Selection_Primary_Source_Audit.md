@@ -41,7 +41,7 @@ This is a source-concordance audit, not an endorsement of Baye's one-set/failure
 
 The routine covers upper and lower body, all six basic movement functions, plantarflexion at the ankle, and direct neck flexion/extension. It does not directly isolate every anatomical subdivision. Baye himself says a huge variety is unnecessary and warns against multiplying curls, grips, and angles (PDF pp. 17–18; printed pp. 13–14).
 
-Direct wrist flexion/extension and grip, hip flexion, hip adduction/abduction, and oblique flexion appear in Baye's expanded programs. They are not hard omissions here. Pulling already gives substantial forearm/grip work, leg press trains the major hip extensors and adductors, compounds require frontal-plane stabilization, and abdominal flexion plus bracing trains the trunk. Baye distributes these supplementary movements across rotating programs rather than requiring all of them in one fixed session. Adding them all would undermine the fixed one-hour, no-rotation policy for increasingly specialized returns.
+Direct wrist flexion/extension and grip, hip flexion, hip adduction/abduction, and oblique flexion appear in Baye's expanded programs. They are not hard omissions here. Pulling already gives substantial forearm/grip work, leg press trains the major hip extensors and adductors, compounds require frontal-plane stabilization, and abdominal flexion plus bracing trains the trunk. Baye distributes these supplementary movements across rotating programs rather than requiring all of them in one fixed session. Adding them all would undermine the fixed, no-rotation routine for increasingly specialized returns; their exclusion is based on exercise value and duplication, not an artificial session deadline.
 
 ## Hard deletions and why they stay deleted
 
@@ -56,7 +56,7 @@ Direct wrist flexion/extension and grip, hip flexion, hip adduction/abduction, a
 
 ## Exercise order
 
-Baye recommends large compound work first, alternating pulling with non-pulling work to reduce grip limitation, and placing direct low-back/abdominal work after exercises needing trunk stability (PDF pp. 50–51; printed pp. 46–47). The current order follows that logic: large leg work first; pull, push, pull, push; leg curl; small anterior-leg work while already at the D-400; then lower back, abdomen and calf; neck last. Separating the D-200 pulldown and row prevents two grip-intensive pulls from being consecutive. Trunk work is delayed until it cannot degrade earlier positioning, the two D-600 functions remain adjacent, and direct neck fatigue cannot affect any compound movement. The numbered slot is the mandatory execution order, and it stays fixed so setup and performance remain comparable.
+Baye recommends large compound work first, alternating pulling with non-pulling work to reduce grip limitation, and placing direct low-back/abdominal work after exercises needing trunk stability (PDF pp. 50–51; printed pp. 46–47). The current order follows that logic: large leg work first; pull, push, pull, push; leg curl; then lower back, abdomen and calf; neck last. Separating the D-200 pulldown and row prevents two grip-intensive pulls from being consecutive. Trunk work is delayed until it cannot degrade earlier positioning, the two D-600 functions remain adjacent, and direct neck fatigue cannot affect any compound movement. The numbered slot is the mandatory execution order, and it stays fixed so setup and performance remain comparable.
 
 ## Primary source
 

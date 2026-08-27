@@ -68,7 +68,7 @@ test("work sets can attach only to strength activities", async () => {
 				activity,
 				exercise: "cl-2403-leg-press",
 				order: 1n,
-				repetitions: 10n,
+				repetitions: 8n,
 				rir: 2n,
 				pain: 0n,
 				position: 1n
@@ -101,7 +101,7 @@ test("closed exercise semantics reject the wrong work-set arm", async () => {
 				activity,
 				exercise: "cl-2403-leg-press",
 				order: 1n,
-				repetitions: 10n,
+				repetitions: 8n,
 				rir: 2n,
 				pain: 0n,
 				eachTenthsLb: 200n
@@ -136,7 +136,7 @@ test("one direct transaction records selector, dumbbell, and TSC work", async ()
 				activity,
 				exercise: "cl-2403-leg-press",
 				order: 1n,
-				repetitions: 10n,
+				repetitions: 8n,
 				rir: 2n,
 				pain: 0n,
 				position: 3n
@@ -148,7 +148,7 @@ test("one direct transaction records selector, dumbbell, and TSC work", async ()
 				activity,
 				exercise: "back-supported-neutral-db-overhead-press",
 				order: 1n,
-				repetitions: 9n,
+				repetitions: 7n,
 				rir: 2n,
 				pain: 0n,
 				eachTenthsLb: 200n

@@ -52,13 +52,10 @@ function clock(minutes: number): string {
 	return localMinuteToClock(BigInt(minutes))
 }
 
-function windowLabel(window: { readonly startMinute: number; readonly endMinute: number }): string {
-	return `${clock(window.startMinute)}–${clock(window.endMinute)}`
-}
-
 export function renderPlan(): string {
-	const strengthWindow = first(prescription.strengthWindows, "strength window")
-	const eBikeWindow = first(prescription.eBikeWindows, "e-bike window")
+	const strengthStart = first(prescription.strengthStarts, "strength start")
+	const eBikeStart = first(prescription.eBikeStarts, "e-bike start")
+	const finalExercise = prescription.strength.exerciseOrder.at(-1)
 	const cadence = prescription.strength.cadence
 	const lines = [
 		`Forever fitness routine — ${prescription.timeZone}`,
@@ -68,32 +65,35 @@ export function renderPlan(): string {
 		`No caffeine after ${clock(prescription.daily.caffeineCutoffMinute)}.`,
 		"",
 		"Weekly schedule",
-		`Strength: ${days(prescription.strengthWindows.map((window) => window.day))}, ${windowLabel(strengthWindow)}.`,
-		`E-bike: ${days(prescription.eBikeWindows.map((window) => window.day))}, ${windowLabel(eBikeWindow)}.`,
+		`Strength: ${days(prescription.strengthStarts.map((start) => start.day))}, start ${clock(strengthStart.startMinute)}; finish after the complete prescription with no session-duration limit.`,
+		`E-bike: ${days(prescription.eBikeStarts.map((start) => start.day))}, start ${clock(eBikeStart.startMinute)}; 60 prescribed minutes.`,
 		"Wednesday and Sunday: no training.",
 		"",
 		"Strength workout — identical Monday and Thursday",
 		"Begin directly with the prescribed work sets; there is no separate warm-up or ramp sequence.",
-		"Complete every set for one exercise before moving to the next; the number is the mandatory execution order."
+		"Complete every set for one exercise before moving to the next; the number is the mandatory execution order.",
+		`Each dynamic repetition uses ${cadence.positiveSeconds} seconds for the positive phase, a smooth continuous turnaround with no deliberate pause, and ${cadence.negativeSeconds} seconds for the negative phase.`
 	]
 	for (const exerciseId of prescription.strength.exerciseOrder) {
 		const exercise = exercisePrescriptionById[exerciseId]
+		const rest = exerciseId === finalExercise ? "workout ends" : `rest ${prescription.strength.restSeconds}s`
 		if (exercise.loadKind === "TimedStaticContraction") {
 			const stageSeconds = prescription.strength.tsc.stageSeconds
 			lines.push(
-				`${exercise.order}. ${exercise.name} — ${exercise.sets} set × ${exercise.durationSeconds}s TSC (${stageSeconds}s moderate, ${stageSeconds}s near-maximal, ${stageSeconds}s hard but safe) — rest ${prescription.strength.restSeconds}s — ${exercise.equipment}`,
+				`${exercise.order}. ${exercise.name} — ${exercise.sets} set × ${exercise.durationSeconds}s TSC (${stageSeconds}s moderate, ${stageSeconds}s near-maximal, ${stageSeconds}s hard but safe) — ${rest} — ${exercise.equipment}`,
 				`   ${exercise.technique}`
 			)
 			continue
 		}
 		lines.push(
-			`${exercise.order}. ${exercise.name} — ${exercise.sets} set${exercise.sets === 1 ? "" : "s"} × ${prescription.strength.repetitionMinimum}–${prescription.strength.repetitionMaximum} reps — target about ${prescription.strength.targetRir} RIR — ${cadence.lowerSeconds}-${cadence.turnSeconds}-${cadence.liftSeconds} — rest ${prescription.strength.restSeconds}s — ${exercise.equipment}`,
+			`${exercise.order}. ${exercise.name} — ${exercise.sets} set${exercise.sets === 1 ? "" : "s"} × ${prescription.strength.repetitionMinimum}–${prescription.strength.repetitionMaximum} reps — target about ${prescription.strength.targetRir} RIR — ${cadence.positiveSeconds}s positive / ${cadence.negativeSeconds}s negative — ${rest} — ${exercise.equipment}`,
 			`   ${exercise.technique}`
 		)
 	}
 	lines.push(
 		"",
 		`Dynamic progression: increase one selector position or the smallest dumbbell step only after every prescribed set for that exercise reaches ${prescription.strength.repetitionMaximum} clean reps while still targeting about ${prescription.strength.targetRir} RIR on ${prescription.strength.promotionExposures} consecutive exposures.`,
+		`If the increased resistance prevents ${prescription.strength.repetitionMinimum} clean reps, return to the preceding resistance at the next exposure.`,
 		"TSC progression: keep the obstacle and body position fixed, ramp effort gradually across all three phases, and record only the duration and pain actually observed; do not invent a force value or RIR.",
 		"Do not deliberately train to failure or use forced reps, negatives, drop sets, or other set-extending methods.",
 		"",

@@ -1,9 +1,8 @@
 import { type DayId, EXERCISE_IDS, type ExerciseId, type LoadKindId } from "#policy/exercises.ts"
 
-interface TrainingWindow {
+interface TrainingStart {
 	readonly day: DayId
 	readonly startMinute: number
-	readonly endMinute: number
 }
 
 interface ExerciseBase {
@@ -140,17 +139,17 @@ interface ForeverPrescription {
 		readonly windDownMinute: number
 		readonly lightsOutMinute: number
 	}
-	readonly strengthWindows: readonly TrainingWindow[]
-	readonly eBikeWindows: readonly TrainingWindow[]
+	readonly strengthStarts: readonly TrainingStart[]
+	readonly eBikeStarts: readonly TrainingStart[]
 	readonly strength: {
-		readonly repetitionMinimum: 8
-		readonly repetitionMaximum: 12
+		readonly repetitionMinimum: 5
+		readonly repetitionMaximum: 8
 		readonly targetRir: 2
 		readonly restSeconds: 120
 		readonly cadence: {
-			readonly lowerSeconds: 2
-			readonly turnSeconds: 1
-			readonly liftSeconds: 2
+			readonly positiveSeconds: 5
+			readonly negativeSeconds: 5
+			readonly turnaround: "smooth-unpaused"
 		}
 		readonly promotionExposures: 2
 		readonly tsc: {
@@ -175,21 +174,25 @@ export const prescription = {
 		windDownMinute: 21 * 60 + 15,
 		lightsOutMinute: 22 * 60
 	},
-	strengthWindows: [
-		{ day: "Monday", startMinute: 7 * 60, endMinute: 8 * 60 },
-		{ day: "Thursday", startMinute: 7 * 60, endMinute: 8 * 60 }
+	strengthStarts: [
+		{ day: "Monday", startMinute: 7 * 60 },
+		{ day: "Thursday", startMinute: 7 * 60 }
 	],
-	eBikeWindows: [
-		{ day: "Tuesday", startMinute: 7 * 60, endMinute: 8 * 60 },
-		{ day: "Friday", startMinute: 7 * 60, endMinute: 8 * 60 },
-		{ day: "Saturday", startMinute: 7 * 60, endMinute: 8 * 60 }
+	eBikeStarts: [
+		{ day: "Tuesday", startMinute: 7 * 60 },
+		{ day: "Friday", startMinute: 7 * 60 },
+		{ day: "Saturday", startMinute: 7 * 60 }
 	],
 	strength: {
-		repetitionMinimum: 8,
-		repetitionMaximum: 12,
+		repetitionMinimum: 5,
+		repetitionMaximum: 8,
 		targetRir: 2,
 		restSeconds: 120,
-		cadence: { lowerSeconds: 2, turnSeconds: 1, liftSeconds: 2 },
+		cadence: {
+			positiveSeconds: 5,
+			negativeSeconds: 5,
+			turnaround: "smooth-unpaused"
+		},
 		promotionExposures: 2,
 		tsc: { stageSeconds: 30, totalSeconds: 90 },
 		exerciseOrder

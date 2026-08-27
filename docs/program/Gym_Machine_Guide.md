@@ -120,10 +120,10 @@ Height supports one conclusion: begin near the middle of the geometry range. It 
 For D-200 pulldown, D-300 press, D-200 row, D-400 curl, both D-600 movements, and the two CL-2403 uses:
 
 1. Establish geometry before load.
-2. At position 1, perform 8 smooth repetitions.
-3. If at least 6 clean repetitions remain, rest 90 seconds, move one position heavier, and perform 5.
+2. At position 1, perform 3 clean repetitions using the prescribed 5-second positive and 5-second negative.
+3. If the probe is plainly easy and at least 5 additional clean repetitions clearly remain, rest 90 seconds, move one position heavier, and perform another 3-repetition probe.
 4. Continue only while each test is plainly easy and technically identical.
-5. Stop before grinding, rest 2 minutes, and use the first conservative position expected to permit 8–12 clean repetitions near the target effort.
+5. Stop before grinding, rest 2 minutes, and use a conservative tested position expected to permit 5–8 clean repetitions near the target effort.
 
 The ladder is one-time load calibration, not a recurring preliminary sequence, max test, or source of work-set records. Body weight and height do not improve this estimate.
 

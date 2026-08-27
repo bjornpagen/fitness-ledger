@@ -3,8 +3,8 @@
 ## Fixed decision
 
 - Wake: 06:30 every day; immediately take one 200 mg caffeine pill.
-- Strength: Monday and Thursday, 07:00–08:00.
-- E-bike: Tuesday, Friday and Saturday, 07:00–08:00.
+- Strength: Monday and Thursday, start at 07:00 and finish after the complete prescription; there is no session-duration limit.
+- E-bike: Tuesday, Friday and Saturday, start at 07:00 and follow the prescribed 60-minute structure.
 - Caffeine cutoff: 14:30.
 - Wind-down: 21:15; lights out: 22:00 every day.
 

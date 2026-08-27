@@ -6,14 +6,14 @@
 
 ## Fixed schedule
 
-| Day | 07:00–08:00 |
+| Day | Training |
 |---|---|
-| Monday | Strength |
-| Tuesday | E-bike |
+| Monday | Strength starts at 07:00 |
+| Tuesday | E-bike starts at 07:00 |
 | Wednesday | No training |
-| Thursday | Strength |
-| Friday | E-bike |
-| Saturday | E-bike |
+| Thursday | Strength starts at 07:00 |
+| Friday | E-bike starts at 07:00 |
+| Saturday | E-bike starts at 07:00 |
 | Sunday | No training |
 
 Every day:
@@ -27,21 +27,23 @@ In WHOOP, open **Tonight's Sleep**, choose **Improve My Sleep**, set **Wake-Up T
 
 There is no training-day substitution, A/B rotation, phase, or program end date. After an absence, resume on the next scheduled day.
 
+07:00 is only a start time. On Monday and Thursday, complete the entire fixed workout and every prescribed rest without rushing, shortening, or skipping work to finish by a particular time. The e-bike session lasts 60 minutes because its three prescribed segments total 60 minutes.
+
 ## Strength workout
 
 Begin directly with the prescribed work sets. There is no EFX preparation, general warm-up, or separate ramp-set sequence.
 
 | Mandatory order | Exercise | Work sets |
 |---:|---|---:|
-| 1 | HOIST CL-2403 leg press | 2 × 8–12 |
-| 2 | HOIST D-200 close-underhand front pulldown — long bar, palms toward you, hands just inside shoulder width | 2 × 8–12 |
-| 3 | HOIST D-300 horizontal chest press | 2 × 8–12 |
-| 4 | HOIST D-200 chest-supported mid-row | 2 × 8–12 |
-| 5 | Back-supported neutral-grip dumbbell overhead press | 2 × 8–12 |
-| 6 | HOIST D-400 seated leg curl | 2 × 8–12 |
-| 7 | HOIST D-600 lower-back extension | 1 × 8–12 |
-| 8 | HOIST D-600 abdominal flexion | 1 × 8–12 |
-| 9 | HOIST CL-2403 straight-leg calf press | 1 × 8–12 |
+| 1 | HOIST CL-2403 leg press | 2 × 5–8 |
+| 2 | HOIST D-200 close-underhand front pulldown — long bar, palms toward you, hands just inside shoulder width | 2 × 5–8 |
+| 3 | HOIST D-300 horizontal chest press | 2 × 5–8 |
+| 4 | HOIST D-200 chest-supported mid-row | 2 × 5–8 |
+| 5 | Back-supported neutral-grip dumbbell overhead press | 2 × 5–8 |
+| 6 | HOIST D-400 seated leg curl | 2 × 5–8 |
+| 7 | HOIST D-600 lower-back extension | 1 × 5–8 |
+| 8 | HOIST D-600 abdominal flexion | 1 × 5–8 |
+| 9 | HOIST CL-2403 straight-leg calf press | 1 × 5–8 |
 | 10 | 45° bench timed static neck extension | 1 × 90 s TSC |
 | 11 | 45° bench timed static neck flexion | 1 × 90 s TSC |
 
@@ -50,7 +52,7 @@ Perform slots 1 through 11 exactly as numbered. Finish every work set for the cu
 For every dynamic work set:
 
 - Target about 2 repetitions in reserve. RIR is an estimate, not an exact measurement.
-- Use a 2-1-2 cadence: lower for 2 seconds, turn smoothly for 1 second, lift under control for 2 seconds.
+- Take 5 seconds to perform the positive/lifting phase, reverse direction smoothly without a deliberate pause, and take 5 seconds to perform the negative/lowering phase. The turnaround is continuous but never bounced or jerked.
 - Rest 2 minutes before the next set.
 - Stop before range, body position, or movement path changes.
 - Do not deliberately train to failure or use forced repetitions, negatives, drop sets, or rest-pause.
@@ -70,7 +72,7 @@ The body and obstacle do not move. Breathe continuously. Reduce effort immediate
 
 ### Dynamic progression
 
-Keep setup, range, and cadence fixed. Increase one selector position or the smallest dumbbell increment only after every prescribed set for that exercise reaches 12 clean repetitions while still targeting about 2 RIR on two consecutive exposures. If the increased load prevents 8 clean repetitions, return to the preceding load at the next exposure.
+Keep setup, range, and cadence fixed. Increase one selector position or the smallest dumbbell increment only after every prescribed set for that exercise reaches 8 clean repetitions while still targeting about 2 RIR on two consecutive exposures. If the increased load prevents 5 clean repetitions, return to the preceding load at the next exposure.
 
 TSC does not use the dynamic promotion rule. Keep the obstacle, body position, bench angle, and yoga-block placement fixed. Record actual duration and pain only. Without force-measuring equipment, do not invent pounds, force, RIR, or a progression claim.
 
@@ -79,10 +81,10 @@ TSC does not use the dynamic promotion rule. Keep the obstacle, body position, b
 This is performed when establishing an exercise, not before every workout:
 
 1. Establish joint alignment and a pain-free range.
-2. At selector position 1, perform 8 plainly easy repetitions.
-3. If at least 6 clean repetitions remain, rest 90 seconds, move one position heavier, and perform 5 repetitions.
+2. At selector position 1, perform 3 clean repetitions using the prescribed 5-second positive and 5-second negative.
+3. If the probe is plainly easy and at least 5 additional clean repetitions clearly remain, rest 90 seconds, move one position heavier, and perform another 3-repetition probe.
 4. Continue one position at a time only while the test remains easy and technically identical.
-5. Stop before grinding, rest 2 minutes, and choose the first conservative work position expected to permit 8–12 clean repetitions near the target effort.
+5. Stop before grinding, rest 2 minutes, and choose a conservative tested position expected to permit 5–8 clean repetitions near the target effort.
 
 Calibrate the D-200 pulldown and row separately. Record D-series loads as selector positions, never invented pounds. Only the CL-2403 has a verified chart: `actual lb = 47 + 23 × (pin − 1)`.
 
@@ -100,7 +102,7 @@ The target is heart-rate zone time, not speed, route, distance, calories, strain
 
 The routine trains upper and lower body twice weekly: knee/hip extension, knee flexion, plantarflexion at the ankle, trunk flexion/extension, vertical and horizontal pulling, horizontal and vertical pushing, and direct neck extension/flexion. Compound work covers the arms and shoulder girdle without duplicate curls, raises, shrugs, or extra presses.
 
-Two full-body strength sessions meet the evidence-supported minimum frequency. The volume is an effective sustainable dose, not a claim of maximal hypertrophy. Controlled ordinary-speed repetitions, multiple sets, adequate rest, and stopping near rather than necessarily at failure are supported; no exact cadence or RIR estimate is biologically privileged. Three 60-minute rides provide 150 weekly minutes of moderate aerobic work.
+Two full-body strength sessions meet the evidence-supported minimum frequency. The volume is an effective sustainable dose, not a claim of maximal hypertrophy. Slow controlled repetitions, multiple sets, adequate rest, and stopping near rather than necessarily at failure are compatible with the evidence; the exact 5/5 cadence is a fixed execution preference, not a biologically privileged value or a proven injury-prevention optimum. Three 60-minute rides provide 150 weekly minutes of moderate aerobic work.
 
 The detailed evidence and technique are in the [operating manual](docs/program/Personal_Fitness_Operating_Manual.md), [Baye audit](docs/research/Drew_Baye_Critical_Evidence_Audit.md), and [exercise-selection audit](docs/research/Exercise_Selection_Primary_Source_Audit.md).
 
