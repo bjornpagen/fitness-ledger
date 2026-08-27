@@ -36,3 +36,13 @@ test("the executable surface has no shadow journal language", async () => {
 		assert.equal(source.includes("parseLedgerEntry"), false)
 	}
 })
+
+test("BumbleDB stays architecture-neutral with the Linux x64 binary locked", async () => {
+	const manifest = await readFile(join(PROJECT_ROOT, "package.json"), "utf8")
+	const lockfile = await readFile(join(PROJECT_ROOT, "pnpm-lock.yaml"), "utf8")
+	assert.equal(manifest.includes('"@bjornpagen/bumbledb": "0.20.0"'), true)
+	assert.equal(manifest.includes('"@bjornpagen/bumbledb-darwin-arm64"'), false)
+	assert.equal(manifest.includes('"@bjornpagen/bumbledb-linux-arm64"'), false)
+	assert.equal(manifest.includes('"@bjornpagen/bumbledb-linux-x64"'), false)
+	assert.equal(lockfile.includes("'@bjornpagen/bumbledb-linux-x64@0.20.0':"), true)
+})

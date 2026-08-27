@@ -25,8 +25,7 @@
 		"check": "pnpm run typecheck && biome check src scripts test package.json tsconfig.json biome.json && pnpm run test"
 	},
 	"dependencies": {
-		"@bjornpagen/bumbledb": "0.19.2",
-		"@bjornpagen/bumbledb-darwin-arm64": "0.19.2",
+		"@bjornpagen/bumbledb": "0.20.0",
 		"@effect/platform-node": "4.0.0-rc.111",
 		"effect": "4.0.0-rc.111"
 	},

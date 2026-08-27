@@ -26,6 +26,8 @@ pnpm status
 pnpm check
 ```
 
+The BumbleDB package selects its native binary from the running Node platform. The lockfile carries Darwin arm64, Linux arm64, and Linux x64 artifacts; a Linux x86-64 host loads `@bjornpagen/bumbledb-linux-x64` directly and does not require CPU emulation.
+
 `pnpm db:init` runs the ignored, idempotent personal seed. The database is created under `private/database/`. Re-running the seed confirms the existing profile and refuses to overwrite a different one.
 
 WHOOP synchronization requires `WHOOP_ACCESS_TOKEN` in the process environment:
