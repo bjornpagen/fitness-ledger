@@ -7,10 +7,14 @@ import {
 	DumbbellWorkSet,
 	EBikeActivity,
 	Exercise,
+	ExerciseMachineSlot,
 	FitnessLedger,
 	MachineSlot,
 	MachineSlotPosition,
+	PainRating,
+	type PainRatingId,
 	Person,
+	PrimaryProfile,
 	SelectorWorkSet,
 	StrengthActivity,
 	TscWorkSet,
@@ -24,7 +28,7 @@ interface SelectorSpec {
 	readonly exercise: ExerciseId
 	readonly loadKind: "SelectorPosition"
 	readonly order: bigint
-	readonly pain: bigint
+	readonly painRating: PainRatingId
 	readonly repetitions: bigint
 	readonly rir: bigint
 	readonly resistancePosition: bigint
@@ -34,7 +38,7 @@ interface DumbbellSpec {
 	readonly exercise: ExerciseId
 	readonly loadKind: "DumbbellPair"
 	readonly order: bigint
-	readonly pain: bigint
+	readonly painRating: PainRatingId
 	readonly repetitions: bigint
 	readonly rir: bigint
 	readonly eachTenthsLb: bigint
@@ -44,7 +48,7 @@ interface TscSpec {
 	readonly exercise: ExerciseId
 	readonly loadKind: "TimedStaticContraction"
 	readonly order: bigint
-	readonly pain: bigint
+	readonly painRating: PainRatingId
 	readonly durationSeconds: bigint
 }
 
@@ -84,7 +88,7 @@ function insertStrengthSets(
 				exercise: specification.exercise,
 				loadKind: specification.loadKind,
 				order: specification.order,
-				pain: specification.pain
+				painRating: specification.painRating
 			}))
 		)
 		for (const [index, specification] of specifications.entries()) {
@@ -127,7 +131,7 @@ const selector = (exercise: ExerciseId, order: bigint, resistancePosition: bigin
 	exercise,
 	loadKind: "SelectorPosition",
 	order,
-	pain: 0n,
+	painRating: "Pain0",
 	repetitions: 6n,
 	rir: 2n,
 	resistancePosition
@@ -144,6 +148,7 @@ test("the theory contains only the hard-cutover observation model", async () => 
 		"CaffeineDoseCue",
 		"CaffeineCutoffCue",
 		"EBikeSegment",
+		"ActivityCompletion",
 		"AdjustmentKind",
 		"SetupSetting",
 		"WhoopWorkoutIdentity"
@@ -164,7 +169,7 @@ test("the theory contains only the hard-cutover observation model", async () => 
 	)
 	assert.deepEqual(
 		WorkSet.data.fields.map((field) => field.name),
-		["id", "activity", "exercise", "loadKind", "order", "pain"]
+		["id", "activity", "exercise", "loadKind", "order", "painRating"]
 	)
 	assert.deepEqual(
 		SelectorWorkSet.data.fields.map((field) => field.name),
@@ -175,12 +180,56 @@ test("the theory contains only the hard-cutover observation model", async () => 
 	assert.equal(Exercise.axioms["bench-tsc-neck-extension"].loadKind, "TimedStaticContraction")
 	assert.equal(MachineSlot.axioms["d-200-seat-height"].machine, "d-200")
 	assert.equal(MachineSlot.axioms["d-400-lower-leg-roller"].machine, "d-400")
+	assert.deepEqual(PainRating.data.handles, [
+		"Pain0",
+		"Pain1",
+		"Pain2",
+		"Pain3",
+		"Pain4",
+		"Pain5",
+		"Pain6",
+		"Pain7",
+		"Pain8",
+		"Pain9",
+		"Pain10"
+	])
 
 	const database = await testDatabase("fitness-ledger-theory-")
 	assert.equal(
 		database.read((instance) => instance.count(Activity)),
 		0n
 	)
+})
+
+test("the primary profile construction permits exactly one person", async () => {
+	const database = await testDatabase("fitness-ledger-single-profile-")
+	assert.equal(
+		database.read((instance) => instance.count(Person)),
+		1n
+	)
+	assert.equal(
+		database.read((instance) => instance.count(PrimaryProfile)),
+		1n
+	)
+	const second = database.write((transaction) => {
+		const person = reserved(transaction.reserve(Person, "id", 1n).at(0n))
+		transaction.insert(Person, [
+			{
+				id: person,
+				name: "Second Example",
+				heightTenthsIn: 700n,
+				birthDateEpochDay: 0n,
+				sex: "Male"
+			}
+		])
+		transaction.insert(PrimaryProfile, [{ person, slot: "Primary" }])
+	})
+	assert.equal(second.tag, "rejected")
+
+	const profile = database.read((instance) => instance.scan(PrimaryProfile)[0])
+	assert.ok(profile !== undefined)
+	const detached = database.write((transaction) => transaction.delete(PrimaryProfile, [profile]))
+	assert.equal(detached.tag, "rejected")
 })
 
 test("work-set parents can attach only to strength activities", async () => {
@@ -207,7 +256,7 @@ test("work-set parents can attach only to strength activities", async () => {
 				exercise: "cl-2403-leg-press",
 				loadKind: "SelectorPosition",
 				order: 1n,
-				pain: 0n
+				painRating: "Pain0"
 			}
 		])
 		transaction.insert(SelectorWorkSet, [{ workSet, repetitions: 8n, rir: 2n, resistancePosition: 1n }])
@@ -239,7 +288,7 @@ test("every work-set parent requires exactly the subtype selected by load kind",
 				exercise: "cl-2403-leg-press",
 				loadKind: "SelectorPosition",
 				order: 1n,
-				pain: 0n
+				painRating: "Pain0"
 			}
 		])
 	})
@@ -268,7 +317,7 @@ test("every work-set parent requires exactly the subtype selected by load kind",
 				exercise: "cl-2403-leg-press",
 				loadKind: "SelectorPosition",
 				order: 1n,
-				pain: 0n
+				painRating: "Pain0"
 			}
 		])
 		transaction.insert(DumbbellWorkSet, [{ workSet, repetitions: 8n, rir: 2n, eachTenthsLb: 200n }])
@@ -284,7 +333,7 @@ test("one direct transaction records selector, dumbbell, and TSC work", async ()
 			exercise: "back-supported-neutral-db-overhead-press",
 			loadKind: "DumbbellPair",
 			order: 1n,
-			pain: 0n,
+			painRating: "Pain0",
 			repetitions: 7n,
 			rir: 2n,
 			eachTenthsLb: 200n
@@ -293,7 +342,7 @@ test("one direct transaction records selector, dumbbell, and TSC work", async ()
 			exercise: "bench-tsc-neck-extension",
 			loadKind: "TimedStaticContraction",
 			order: 1n,
-			pain: 0n,
+			painRating: "Pain0",
 			durationSeconds: 90n
 		}
 	])
@@ -313,6 +362,41 @@ test("one direct transaction records selector, dumbbell, and TSC work", async ()
 		database.read((instance) => instance.count(TscWorkSet)),
 		1n
 	)
+})
+
+test("an activity completion can be corrected atomically without rewriting its set tree", async () => {
+	const database = await testDatabase("fitness-ledger-correct-completion-")
+	const { activity, workSets } = insertStrengthSets(database, [selector("cl-2403-leg-press", 1n, 3n)])
+	const before = database.read((instance) => instance.scan(Activity).find((candidate) => candidate.id === activity))
+	assert.ok(before !== undefined)
+	const corrected = database.write((transaction) => {
+		transaction.delete(Activity, [before])
+		transaction.insert(Activity, [
+			{
+				...before,
+				completedAt: 2_000n,
+				completedAtPrecision: "Millisecond",
+				timezoneOffsetMinutes: -360n
+			}
+		])
+	})
+	assert.equal(corrected.tag, "accepted")
+	assert.equal(
+		database.read((instance) => instance.scan(Activity).find((candidate) => candidate.id === activity)?.completedAt),
+		2_000n
+	)
+	assert.deepEqual(
+		database.read((instance) => instance.scan(WorkSet).map((set) => set.id)),
+		workSets
+	)
+})
+
+test("the exercise-to-machine-slot applicability roster cannot shrink", async () => {
+	const database = await testDatabase("fitness-ledger-sealed-applicability-")
+	const applicability = database.read((instance) => instance.scan(ExerciseMachineSlot)[0])
+	assert.ok(applicability !== undefined)
+	const deleted = database.write((transaction) => transaction.delete(ExerciseMachineSlot, [applicability]))
+	assert.equal(deleted.tag, "rejected")
 })
 
 test("machine geometry may change between sets independently of resistance", async () => {

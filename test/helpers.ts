@@ -2,7 +2,7 @@ import { mkdtemp } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { createFitnessDatabase, type FitnessDatabase } from "#application/database.ts"
-import { Person } from "#application/schema.ts"
+import { Person, PrimaryProfile } from "#application/schema.ts"
 import { calendarDateToEpochDay } from "#mechanism/dates.ts"
 import { failFitnessLedger } from "#mechanism/failure.ts"
 
@@ -25,6 +25,7 @@ export async function testDatabase(prefix: string): Promise<FitnessDatabase> {
 				sex: "Female"
 			}
 		])
+		transaction.insert(PrimaryProfile, [{ person, slot: "Primary" }])
 		return person
 	})
 	if (outcome.tag !== "accepted") return failFitnessLedger("test profile was rejected")

@@ -31,6 +31,23 @@ export const MachineSlot = closed("MachineSlot", MACHINE_SLOT_IDS, { machine: Ma
 export const ExerciseMachineSlotId = closed("ExerciseMachineSlotId", EXERCISE_MACHINE_SLOT_IDS)
 export const ActivityKind = closed("ActivityKind", ["Strength", "EBike"])
 export const CompletedAtPrecision = closed("CompletedAtPrecision", ["Minute", "Millisecond"])
+export const PAIN_RATING_IDS = [
+	"Pain0",
+	"Pain1",
+	"Pain2",
+	"Pain3",
+	"Pain4",
+	"Pain5",
+	"Pain6",
+	"Pain7",
+	"Pain8",
+	"Pain9",
+	"Pain10"
+] as const
+export type PainRatingId = (typeof PAIN_RATING_IDS)[number]
+export const PainRating = closed("PainRating", PAIN_RATING_IDS)
+export const ProfileSlot = closed("ProfileSlot", ["Primary"])
+export const HeartRateZonePartition = closed("HeartRateZonePartition", ["SixZones"])
 export const MeasurementKind = closed("MeasurementKind", ["BodyWeight", "Waist"])
 export const Sex = closed("Sex", ["Female", "Male"])
 
@@ -40,6 +57,11 @@ export const Person = relation("Person", {
 	heightTenthsIn: u64,
 	birthDateEpochDay: i64,
 	sex: Sex.id
+})
+
+export const PrimaryProfile = relation("PrimaryProfile", {
+	person: u64,
+	slot: ProfileSlot.id
 })
 
 export const ExerciseRosterMember = relation("ExerciseRosterMember", {
@@ -80,7 +102,7 @@ export const WorkSet = relation("WorkSet", {
 	exercise: Exercise.id,
 	loadKind: LoadKind.id,
 	order: u64,
-	pain: u64
+	painRating: PainRating.id
 })
 
 export const SelectorWorkSet = relation("SelectorWorkSet", {
@@ -119,7 +141,9 @@ export const WhoopWorkout = relation("WhoopWorkout", {
 
 export const ActivityWhoopWorkout = relation("ActivityWhoopWorkout", {
 	activity: u64,
-	externalId: bytes(16)
+	externalId: bytes(16),
+	person: u64,
+	kind: ActivityKind.id
 })
 
 export const HeartRateSummary = relation("HeartRateSummary", {
@@ -133,6 +157,11 @@ export const HeartRateZoneDuration = relation("HeartRateZoneDuration", {
 	externalId: bytes(16),
 	zone: interval(u64, 1n),
 	milliseconds: u64
+})
+
+export const HeartRateZonePartitionMember = relation("HeartRateZonePartitionMember", {
+	id: HeartRateZonePartition.id,
+	zones: interval(u64)
 })
 
 export const SleepInterval = relation("SleepInterval", {
@@ -186,9 +215,13 @@ export const FitnessLedger = schema(
 		ExerciseMachineSlotId,
 		ActivityKind,
 		CompletedAtPrecision,
+		PainRating,
+		ProfileSlot,
+		HeartRateZonePartition,
 		MeasurementKind,
 		Sex,
 		Person,
+		PrimaryProfile,
 		ExerciseRosterMember,
 		MachineSlotRosterMember,
 		ExerciseMachineSlot,
@@ -205,6 +238,7 @@ export const FitnessLedger = schema(
 		ActivityWhoopWorkout,
 		HeartRateSummary,
 		HeartRateZoneDuration,
+		HeartRateZonePartitionMember,
 		SleepInterval,
 		WhoopSleepIdentity,
 		Measurement,
@@ -216,6 +250,10 @@ export const FitnessLedger = schema(
 		contained(on(MachineSlot, "machine"), on(Machine, "id")),
 		personNameKey,
 		contained(on(Person, "sex"), on(Sex, "id")),
+		contained(on(PrimaryProfile, "slot"), on(ProfileSlot, "id")),
+		key(PrimaryProfile, ["person"]),
+		key(PrimaryProfile, ["slot"]),
+		mirrors(on(Person, "id"), on(PrimaryProfile, "person")),
 		contained(on(ExerciseRosterMember, "id"), on(Exercise, "id")),
 		contained(on(ExerciseRosterMember, "exercise"), on(Exercise, "id")),
 		key(ExerciseRosterMember, ["id"]),
@@ -226,16 +264,17 @@ export const FitnessLedger = schema(
 		key(MachineSlotRosterMember, ["id"]),
 		key(MachineSlotRosterMember, ["slot"]),
 		mirrors(on(MachineSlotRosterMember, "id"), on(MachineSlotRosterMember, "slot")),
-		contained(on(ExerciseMachineSlot, "id"), on(ExerciseMachineSlotId, "id")),
 		contained(on(ExerciseMachineSlot, "exercise"), on(Exercise, "id")),
 		contained(on(ExerciseMachineSlot, "slot"), on(MachineSlot, "id")),
 		key(ExerciseMachineSlot, ["id"]),
 		key(ExerciseMachineSlot, ["exercise", "slot"]),
+		mirrors(on(ExerciseMachineSlotId, "id"), on(ExerciseMachineSlot, "id")),
 		contained(on(MachineSlotPosition, "slot"), on(MachineSlot, "id")),
 		key(MachineSlotPosition, ["slot", "position"]),
 		contained(on(Activity, "person"), on(Person, "id")),
 		contained(on(Activity, "kind"), on(ActivityKind, "id")),
 		contained(on(Activity, "completedAtPrecision"), on(CompletedAtPrecision, "id")),
+		key(Activity, ["id", "person", "kind"]),
 		key(StrengthActivity, ["activity"]),
 		key(EBikeActivity, ["activity"]),
 		mirrors(on(Activity.where({ kind: "Strength" }), "id"), on(StrengthActivity, "activity")),
@@ -270,13 +309,23 @@ export const FitnessLedger = schema(
 		contained(on(WhoopWorkout, "person"), on(Person, "id")),
 		contained(on(WhoopWorkout, "kind"), on(ActivityKind, "id")),
 		key(WhoopWorkout, ["externalId"]),
-		contained(on(ActivityWhoopWorkout, "activity"), on(Activity, "id")),
-		contained(on(ActivityWhoopWorkout, "externalId"), on(WhoopWorkout, "externalId")),
-		key(ActivityWhoopWorkout, ["activity"]),
+		key(WhoopWorkout, ["externalId", "person", "kind"]),
+		contained(on(ActivityWhoopWorkout, ["activity", "person", "kind"]), on(Activity, ["id", "person", "kind"])),
+		contained(
+			on(ActivityWhoopWorkout, ["externalId", "person", "kind"]),
+			on(WhoopWorkout, ["externalId", "person", "kind"])
+		),
 		key(ActivityWhoopWorkout, ["externalId"]),
-		contained(on(HeartRateSummary, "externalId"), on(WhoopWorkout, "externalId")),
+		mirrors(on(WhoopWorkout, "externalId"), on(HeartRateSummary, "externalId")),
 		key(HeartRateSummary, ["externalId"]),
 		key(HeartRateSummary, ["externalId", "zones"]),
+		key(HeartRateZonePartitionMember, ["id"]),
+		key(HeartRateZonePartitionMember, ["zones"]),
+		mirrors(
+			on(HeartRateZonePartition, "id"),
+			on(HeartRateZonePartitionMember.where({ zones: { start: 0n, end: 6n } }), "id")
+		),
+		contained(on(HeartRateSummary, "zones"), on(HeartRateZonePartitionMember, "zones")),
 		key(HeartRateZoneDuration, ["externalId", "zone"]),
 		mirrors(on(HeartRateSummary, ["externalId", "zones"]), on(HeartRateZoneDuration, ["externalId", "zone"])),
 		contained(on(SleepInterval, "person"), on(Person, "id")),

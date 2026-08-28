@@ -46,9 +46,9 @@ Real observations exist only as BumbleDB facts. Agents read with BumbleDB querie
 
 The theory contains:
 
-- sealed value domains for load kind, exercise, machine, machine slot, activity kind, completion-time precision, measurement kind, and sex;
-- fixed exercise-to-machine-slot applicability roster facts;
-- one private personal profile;
+- sealed value domains for load kind, exercise, machine, machine slot, activity kind, completion-time precision, 0–10 pain rating, measurement kind, and sex;
+- a fixed, deletion-proof exercise-to-machine-slot applicability roster;
+- exactly one linked primary profile in every initialized personal store;
 - strength and e-bike activity completion events;
 - common work-set parents with exactly one selector, dumbbell, or timed-static child;
 - typed machine-slot positions and optional per-work-set settings;
@@ -65,7 +65,7 @@ It contains no facility inventory, routine, schedule, caffeine rule, e-bike reci
 - every parent must have exactly one child selected by that load kind;
 - a child cannot exist without the matching parent.
 
-The parent owns activity, exercise, within-exercise order, and pain. Selector repetitions/RIR/resistance, dumbbell repetitions/RIR/weight, and timed-static duration live only on their corresponding children. This keeps intrinsic load shape in the theory while leaving exercise order, prescribed set counts, progression, and technique in policy.
+The parent owns activity, exercise, within-exercise order, and the closed `Pain0`–`Pain10` rating. Selector repetitions/RIR/resistance, dumbbell repetitions/RIR/weight, and timed-static duration live only on their corresponding children. This keeps intrinsic load shape in the theory while leaving exercise order, prescribed set counts, progression, and technique in policy. Pain is always supplied; absence is not encoded as zero. RIR remains an open nonnegative count.
 
 ### Activity time and machine geometry
 
@@ -73,18 +73,18 @@ An `Activity` has one `completedAt` event, its observed UTC offset, and an expli
 
 `MachineSlot` defines physical geometry on one machine. `ExerciseMachineSlot` is an applicability whitelist, not a completeness rule. `WorkSetMachineSetting` joins one set to an applicable slot and a known slot-position pair, keyed so a set cannot have two values for one slot. Settings may vary between sets and omitted settings remain absent. The adjustable bench is unidentified, and yoga-block placement is exercise technique rather than an invented machine slot.
 
-Selector resistance is a separate ordinal `resistancePosition`, not geometry or pounds. Dumbbell weight is fixed-point tenths of a pound per hand. Timed-static work stores duration and pain only because the setup does not measure force.
+Selector resistance is a separate ordinal `resistancePosition`, not geometry or pounds. Dumbbell weight is fixed-point tenths of a pound per hand. Timed-static work stores duration and the 0–10 pain rating only because the setup does not measure force.
 
-`WhoopWorkout` retains the provider's UUID, exact interval/offset, classified kind, and person independently of conversational activities. Import never creates or fuzzy-matches an `Activity`; `ActivityWhoopWorkout` is an explicit one-to-one disambiguation. Heart-rate summaries refer to WHOOP evidence and mirror an exact six-slot `[0, 6)` zone partition. Strain, recovery, energy, distance, altitude, sleep scores/stages/need/debt/efficiency, and coaching recommendations never enter the theory.
+`WhoopWorkout` retains the provider's UUID, exact interval/offset, classified kind, and person independently of conversational activities. Every accepted workout has exactly one heart-rate summary and six zone-duration facts partitioning `[0, 6)`. Import never creates or fuzzy-matches an `Activity`; `ActivityWhoopWorkout` is an explicit disambiguation carrying person and kind. One activity can collect multiple WHOOP fragments, but one provider UUID cannot support two activities, and both endpoints must agree on person and kind. Exact UUID reimports are no-ops only when every trusted field agrees; drift is an explicit conflict. Strain, recovery, energy, distance, altitude, sleep scores/stages/need/debt/efficiency, and coaching recommendations never enter the theory.
 
 ## Private distribution layer
 
-`private/` is ignored as one portable unit. It contains the personal seed, database, purchased sources, and photographs. The seed calls `Db.create`/`Db.open` and writes `Person` directly; it has no alternate data language.
+`private/` is ignored as one portable unit. It contains the personal seed, database, purchased sources, and photographs. The seed uses the public database lifecycle and writes `Person` plus its `PrimaryProfile` link in one typed transaction; it has no alternate data language.
 
 The public repository remains buildable without this directory. Restoring an authorized private zip completes the local personal system.
 
 ## Store lifecycle
 
-BumbleDB fingerprints the complete theory and refuses to reinterpret an incompatible store. This is a hard cutover: old stores are intentionally incompatible, and the application contains no compatibility or migration layer.
+BumbleDB fingerprints the complete theory and refuses to reinterpret an incompatible store. Fresh creation publishes a fully admitted instance containing all sealed roster facts, rather than exposing a temporarily incomplete catalog. This is a hard cutover: old stores are intentionally incompatible, and the application contains no compatibility or migration layer.
 
 `pnpm check` typechecks, runs Biome with the repository GritQL rules, and executes the theory, query, WHOOP, timing, prescription, architecture, and stale-decision tests.

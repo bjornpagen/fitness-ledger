@@ -28,7 +28,7 @@ pnpm check
 
 The BumbleDB package selects its native binary from the running Node platform. The lockfile carries Darwin arm64, Linux arm64, and Linux x64 artifacts; a Linux x86-64 host loads `@bjornpagen/bumbledb-linux-x64` directly and does not require CPU emulation.
 
-`pnpm db:init` runs the ignored, idempotent personal seed. The database is created under `private/database/`. Re-running the seed confirms the existing profile and refuses to overwrite a different one.
+`pnpm db:init` runs the ignored, idempotent personal seed. The database is created under `private/database/`. The seed writes the person and primary-profile link atomically; re-running it confirms the existing profile and refuses to overwrite a different one.
 
 WHOOP synchronization requires `WHOOP_ACCESS_TOKEN` in the process environment:
 
@@ -36,7 +36,7 @@ WHOOP synchronization requires `WHOOP_ACCESS_TOKEN` in the process environment:
 pnpm whoop:sync -- 2026-08-01T00:00:00-05:00 2026-09-01T00:00:00-05:00
 ```
 
-Only exact provider spans/offsets, UUID identity, workout average/max heart rate, six integer zone durations, and nap classification cross that boundary. WHOOP workouts remain independent evidence until the chatbot explicitly links one to a conversational activity.
+Only exact provider spans/offsets, UUID identity, workout average/max heart rate, six integer zone durations, and nap classification cross that boundary. WHOOP workouts remain independent evidence until the chatbot explicitly links one or more same-person, same-kind fragments to a conversational activity. Conflicting trusted payload under an existing UUID is rejected.
 
 ## Direct agent access
 
@@ -51,7 +51,7 @@ const prepared = database.prepare(queries.selectorWorkSets)
 const sets = database.read((instance) => instance.execute(prepared, {}))
 ```
 
-BumbleDB judges every direct transaction against the theory. Closed exercise payloads restrict every work-set parent to its legal selector, dumbbell, or timed-static child; work sets require strength activities; per-set machine settings must use applicable slots and cataloged slot-position pairs; WHOOP zones must form the exact six-slot partition. Complete write examples live in `test/schema.test.ts`.
+BumbleDB judges every direct transaction against the theory. Closed exercise payloads restrict every work-set parent to its legal selector, dumbbell, or timed-static child; work sets require strength activities and a sealed 0–10 pain rating; per-set machine settings must use applicable slots and cataloged slot-position pairs; the applicability roster cannot shrink; WHOOP workouts require the exact six-slot partition. Complete write examples live in `test/schema.test.ts`.
 
 ## Private source pack
 

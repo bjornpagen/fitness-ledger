@@ -34,30 +34,30 @@ export const activities = query(FitnessLedger).rule((rule) => {
 })
 
 export const selectorWorkSets = query(FitnessLedger).rule((rule) => {
-	const { id, activity, exercise, order, pain } = v(WorkSet)
+	const { id, activity, exercise, order, painRating } = v(WorkSet)
 	const { repetitions, rir, resistancePosition } = v(SelectorWorkSet)
 	return rule
-		.match(WorkSet, { id, activity, exercise, loadKind: "SelectorPosition", order, pain })
+		.match(WorkSet, { id, activity, exercise, loadKind: "SelectorPosition", order, painRating })
 		.match(SelectorWorkSet, { workSet: id, repetitions, rir, resistancePosition })
-		.find({ id, activity, exercise, order, repetitions, rir, pain, resistancePosition })
+		.find({ id, activity, exercise, order, repetitions, rir, painRating, resistancePosition })
 })
 
 export const dumbbellWorkSets = query(FitnessLedger).rule((rule) => {
-	const { id, activity, exercise, order, pain } = v(WorkSet)
+	const { id, activity, exercise, order, painRating } = v(WorkSet)
 	const { repetitions, rir, eachTenthsLb } = v(DumbbellWorkSet)
 	return rule
-		.match(WorkSet, { id, activity, exercise, loadKind: "DumbbellPair", order, pain })
+		.match(WorkSet, { id, activity, exercise, loadKind: "DumbbellPair", order, painRating })
 		.match(DumbbellWorkSet, { workSet: id, repetitions, rir, eachTenthsLb })
-		.find({ id, activity, exercise, order, repetitions, rir, pain, eachTenthsLb })
+		.find({ id, activity, exercise, order, repetitions, rir, painRating, eachTenthsLb })
 })
 
 export const tscWorkSets = query(FitnessLedger).rule((rule) => {
-	const { id, activity, exercise, order, pain } = v(WorkSet)
+	const { id, activity, exercise, order, painRating } = v(WorkSet)
 	const { durationSeconds } = v(TscWorkSet)
 	return rule
-		.match(WorkSet, { id, activity, exercise, loadKind: "TimedStaticContraction", order, pain })
+		.match(WorkSet, { id, activity, exercise, loadKind: "TimedStaticContraction", order, painRating })
 		.match(TscWorkSet, { workSet: id, durationSeconds })
-		.find({ id, activity, exercise, order, durationSeconds, pain })
+		.find({ id, activity, exercise, order, durationSeconds, painRating })
 })
 
 export const workSetMachineSettings = query(FitnessLedger).rule((rule) => {
@@ -80,8 +80,13 @@ export const whoopWorkouts = query(FitnessLedger).rule((rule) => {
 })
 
 export const activityWhoopWorkouts = query(FitnessLedger).rule((rule) => {
-	const { activity, externalId } = v(ActivityWhoopWorkout)
-	return rule.match(ActivityWhoopWorkout, { activity, externalId }).find({ activity, externalId })
+	const { activity, externalId, person, kind } = v(ActivityWhoopWorkout)
+	return rule.match(ActivityWhoopWorkout, { activity, externalId, person, kind }).find({
+		activity,
+		externalId,
+		person,
+		kind
+	})
 })
 
 export const sleeps = query(FitnessLedger).rule((rule) => {

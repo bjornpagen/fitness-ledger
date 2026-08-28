@@ -21,6 +21,13 @@ function bytesEqual(left: Uint8Array, right: Uint8Array): boolean {
 	return left.length === right.length && left.every((value, index) => value === right[index])
 }
 
+function intervalEqual(
+	left: { readonly start: bigint; readonly end: bigint },
+	right: { readonly start: bigint; readonly end: bigint }
+): boolean {
+	return left.start === right.start && left.end === right.end
+}
+
 function one<T>(values: readonly T[], label: string): T {
 	const value = values[0]
 	if (values.length !== 1 || value === undefined) {
@@ -62,14 +69,46 @@ export function syncWhoopSnapshot(database: FitnessDatabase, snapshot: WhoopSnap
 			continue
 		}
 		const externalId = uuidBytes(record.id)
-		const state = database.read((instance) => ({
-			workouts: instance.scan(WhoopWorkout)
+		const span = parseInstantSpan(record.start, record.end)
+		const timezoneOffsetMinutes = parseTimezoneDesignator(record.timezoneOffset)
+		const expectedZones = record.zoneMilliseconds.map((milliseconds, zone) => ({
+			externalId,
+			zone: { start: BigInt(zone), end: BigInt(zone + 1) },
+			milliseconds: BigInt(milliseconds)
 		}))
-		if (state.workouts.some((workout) => bytesEqual(workout.externalId, externalId))) {
+		const state = database.read((instance) => ({
+			workouts: instance.scan(WhoopWorkout),
+			summaries: instance.scan(HeartRateSummary),
+			zones: instance.scan(HeartRateZoneDuration)
+		}))
+		const existing = state.workouts.find((workout) => bytesEqual(workout.externalId, externalId))
+		if (existing !== undefined) {
+			const summary = state.summaries.find((candidate) => bytesEqual(candidate.externalId, externalId))
+			const zones = state.zones
+				.filter((zone) => bytesEqual(zone.externalId, externalId))
+				.sort((left, right) => Number(left.zone.start - right.zone.start))
+			const exact =
+				existing.person === person.id &&
+				existing.kind === record.kind &&
+				intervalEqual(existing.span, span) &&
+				existing.timezoneOffsetMinutes === timezoneOffsetMinutes &&
+				summary !== undefined &&
+				summary.averageBpm === BigInt(record.averageHeartRate) &&
+				summary.maxBpm === BigInt(record.maxHeartRate) &&
+				intervalEqual(summary.zones, { start: 0n, end: 6n }) &&
+				zones.length === expectedZones.length &&
+				zones.every((zone, index) => {
+					const expected = expectedZones[index]
+					return (
+						expected !== undefined &&
+						intervalEqual(zone.zone, expected.zone) &&
+						zone.milliseconds === expected.milliseconds
+					)
+				})
+			if (!exact) return failFitnessLedger(`WHOOP workout ${record.id} conflicts with its stored trusted payload`)
 			workoutsSkipped += 1
 			continue
 		}
-		const span = parseInstantSpan(record.start, record.end)
 		const outcome = database.write((transaction) => {
 			transaction.insert(WhoopWorkout, [
 				{
@@ -77,7 +116,7 @@ export function syncWhoopSnapshot(database: FitnessDatabase, snapshot: WhoopSnap
 					person: person.id,
 					kind: record.kind,
 					span,
-					timezoneOffsetMinutes: parseTimezoneDesignator(record.timezoneOffset)
+					timezoneOffsetMinutes
 				}
 			])
 			transaction.insert(HeartRateSummary, [
@@ -88,14 +127,7 @@ export function syncWhoopSnapshot(database: FitnessDatabase, snapshot: WhoopSnap
 					zones: { start: 0n, end: 6n }
 				}
 			])
-			transaction.insert(
-				HeartRateZoneDuration,
-				record.zoneMilliseconds.map((milliseconds, zone) => ({
-					externalId,
-					zone: { start: BigInt(zone), end: BigInt(zone + 1) },
-					milliseconds: BigInt(milliseconds)
-				}))
-			)
+			transaction.insert(HeartRateZoneDuration, expectedZones)
 		})
 		if (outcome.tag !== "accepted") reject(outcome)
 		workoutsImported += 1
@@ -103,20 +135,33 @@ export function syncWhoopSnapshot(database: FitnessDatabase, snapshot: WhoopSnap
 
 	for (const record of snapshot.sleeps) {
 		const externalId = uuidBytes(record.id)
+		const span = parseInstantSpan(record.start, record.end)
+		const timezoneOffsetMinutes = parseTimezoneDesignator(record.timezone_offset)
 		const state = database.read((instance) => ({
 			identities: instance.scan(WhoopSleepIdentity),
 			sleeps: instance.scan(SleepInterval)
 		}))
-		if (state.identities.some((identity) => bytesEqual(identity.externalId, externalId))) {
+		const identity = state.identities.find((candidate) => bytesEqual(candidate.externalId, externalId))
+		if (identity !== undefined) {
+			const sleep = state.sleeps.find((candidate) => candidate.id === identity.sleep)
+			const exact =
+				sleep !== undefined &&
+				sleep.person === person.id &&
+				intervalEqual(sleep.span, span) &&
+				sleep.timezoneOffsetMinutes === timezoneOffsetMinutes &&
+				sleep.nap === record.nap
+			if (!exact) return failFitnessLedger(`WHOOP sleep ${record.id} conflicts with its stored trusted payload`)
 			sleepsSkipped += 1
 			continue
 		}
-		const span = parseInstantSpan(record.start, record.end)
 		const existing = state.sleeps.find(
 			(sleep) => sleep.person === person.id && sleep.span.start === span.start && sleep.span.end === span.end
 		)
-		if (existing !== undefined && existing.nap !== record.nap) {
-			return failFitnessLedger(`WHOOP ${record.id} nap classification conflicts with the exact stored sleep interval`)
+		if (
+			existing !== undefined &&
+			(existing.nap !== record.nap || existing.timezoneOffsetMinutes !== timezoneOffsetMinutes)
+		) {
+			return failFitnessLedger(`WHOOP sleep ${record.id} conflicts with the exact stored sleep interval`)
 		}
 		const outcome = database.write((transaction) => {
 			const sleep = existing?.id ?? idAt(transaction.reserve(SleepInterval, "id", 1n), "sleep id")
@@ -126,7 +171,7 @@ export function syncWhoopSnapshot(database: FitnessDatabase, snapshot: WhoopSnap
 						id: sleep,
 						person: person.id,
 						span,
-						timezoneOffsetMinutes: parseTimezoneDesignator(record.timezone_offset),
+						timezoneOffsetMinutes,
 						nap: record.nap
 					}
 				])

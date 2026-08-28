@@ -62,7 +62,7 @@ Keeping this order unchanged also makes load, repetition, and RIR comparisons mo
 
 Every repetition uses a 5-second positive/lifting phase and a 5-second negative/lowering phase. Begin the positive phase without jerking. As either endpoint approaches, decelerate into a smooth continuous reversal: there is no scheduled isometric pause, but there is also no bounce, abrupt direction change, hard lockout, or deliberate unloading between repetitions. Do not shorten range as fatigue rises or move the torso to finish a repetition. The last accepted repetition must remain the same exercise as the first.
 
-At this cadence, 5–8 repetitions imply approximately 50–80 seconds of dynamic movement. That arithmetic is a consequence of the cadence, not a time-under-tension target and not a limit on workout duration. Count clean repetitions; do not terminate a technically sound set merely because a stopwatch reaches a particular number. Load, clean repetitions, consistent range, estimated RIR, and pain remain the useful observations.
+At this cadence, 5–8 repetitions imply approximately 50–80 seconds of dynamic movement. That arithmetic is a consequence of the cadence, not a time-under-tension target and not a limit on workout duration. Count clean repetitions; do not terminate a technically sound set merely because a stopwatch reaches a particular number. Load, clean repetitions, consistent range, estimated RIR, and a required 0–10 pain rating remain the useful observations.
 
 RIR means additional clean repetitions available without changing technique. Target about 2 RIR; do not claim exact knowledge. End the set before the next repetition would require a changed path, shortened range, bounce, or body-position shift. Do not deliberately train to failure or use set-extension methods.
 
@@ -79,7 +79,7 @@ Neck extension and neck flexion use one continuous 90-second contraction against
 
 Breathe continuously and keep every non-target body segment quiet. The first moderate phase is the preparation; there is no separate TSC warm-up. Reduce effort before any pain threshold. Stop for sharp or escalating pain, numbness, tingling, dizziness, headache, visual disturbance, or loss of position. Rest 120 seconds before the next exercise.
 
-TSC effort is not RIR. Without force-measuring equipment, neither force output nor progression can be quantified honestly. BumbleDB therefore stores only actual duration and pain, never estimated pounds, invented force, or an RIR value.
+TSC effort is not RIR. Without force-measuring equipment, neither force output nor progression can be quantified honestly. BumbleDB therefore stores only actual duration and the required 0–10 pain rating, never estimated pounds, invented force, or an RIR value.
 
 ### Dynamic progression
 
@@ -197,6 +197,6 @@ The TypeScript prescription describes what should happen. BumbleDB contains a fi
 
 It contains no recurring schedule, workout template, caffeine rule, e-bike recipe, research provenance, completed/missed state, or proprietary WHOOP score. Partial sessions contain only work and settings that occurred.
 
-Review facts, not vendor projections: load/repetition trends, technique-stable effort estimates, pain, Zone 2 duration, sleep intervals, and setup changes.
+Review facts, not vendor projections: load/repetition trends, technique-stable effort estimates, pain ratings, Zone 2 duration, sleep intervals, and setup changes.
 
 The source-grounded exercise audit is [Exercise_Selection_Primary_Source_Audit.md](../research/Exercise_Selection_Primary_Source_Audit.md). The broader scientific critique is [Drew_Baye_Critical_Evidence_Audit.md](../research/Drew_Baye_Critical_Evidence_Audit.md).

@@ -20,7 +20,7 @@ API specification inspected August 26, 2026: [WHOOP OpenAPI JSON](https://api.pr
 | `zone_zero_milli` through `zone_five_milli` | Six exact ordered slots with integer milliseconds | Dense retained HR-zone distribution |
 | Sleep `nap` | Boolean classification | Distinguishes nap from primary sleep interval |
 
-The six zone facts exactly partition zone indices `[0, 6)`. This guarantees one duration per zone without implying that WHOOP's recorded time equals the activity duration.
+Every stored WHOOP workout requires one heart-rate summary. Its six zone facts exactly partition zone indices `[0, 6)`. This guarantees one duration per zone without implying that WHOOP's recorded time equals the activity duration.
 
 ## Fields discarded during decode
 
@@ -37,7 +37,9 @@ These fields never enter the decoded TypeScript value passed to the database. Te
 
 `pnpm whoop:sync -- <start> <end>` fetches only `/v2/activity/workout` and `/v2/activity/sleep`. It does not call cycle or recovery endpoints. Only scored workouts with an explicitly recognized strength/cycling sport name receive HR summaries; unscored or unrelated sports are skipped.
 
-An imported UUID is unique. Re-importing the same record is a no-op. A workout import creates independent `WhoopWorkout` evidence and heart-rate facts; it never creates, interval-matches, or merges a conversational `Activity`. The chatbot disambiguates the user's context and writes an explicit one-to-one `ActivityWhoopWorkout` link only when warranted.
+An imported UUID is unique. Re-importing it is a no-op only when every persisted whitelist field matches exactly; changed trusted payload is reported as a conflict rather than silently retaining stale data. Sleep identity receives the same equality check, and exact-span sleep reuse additionally requires equal offset and nap classification.
+
+A workout import creates independent `WhoopWorkout` evidence and mandatory heart-rate facts; it never creates, interval-matches, or merges a conversational `Activity`. The chatbot disambiguates the user's context and writes an explicit person-and-kind-preserving `ActivityWhoopWorkout` link only when warranted. One activity may cite multiple WHOOP fragments; each WHOOP UUID may support at most one activity.
 
 Credentials come from `WHOOP_ACCESS_TOKEN` in the invoking process environment. No token, refresh credential, user ID or secret file belongs in the repository.
 

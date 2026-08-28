@@ -1,8 +1,9 @@
-import { Db } from "@bjornpagen/bumbledb"
+import { Db, InstanceBuilder } from "@bjornpagen/bumbledb"
 import {
 	ExerciseMachineSlot,
 	ExerciseRosterMember,
 	FitnessLedger,
+	HeartRateZonePartitionMember,
 	MachineSlotRosterMember
 } from "#application/schema.ts"
 import { failFitnessLedger } from "#mechanism/failure.ts"
@@ -18,25 +19,25 @@ function rejected(label: string, violations: readonly { readonly canonical: stri
 }
 
 export async function createFitnessDatabase(storePath: string) {
-	const admission = await Db.create(storePath, FitnessLedger)
-	if (admission.tag !== "accepted") return rejected("BumbleDB rejected the fresh fitness store", admission.violations)
-	const database = admission.value
-	const roster = database.write((transaction) => {
-		transaction.insert(
-			ExerciseRosterMember,
-			EXERCISE_IDS.map((exercise) => ({ id: exercise, exercise }))
-		)
-		transaction.insert(
-			MachineSlotRosterMember,
-			MACHINE_SLOT_IDS.map((slot) => ({ id: slot, slot }))
-		)
-		transaction.insert(
-			ExerciseMachineSlot,
-			EXERCISE_MACHINE_SLOT_IDS.map((id) => ({ id, ...exerciseMachineSlotById[id] }))
-		)
-	})
-	if (roster.tag !== "accepted") return rejected("BumbleDB rejected the machine-slot roster", roster.violations)
-	return database
+	const builder = InstanceBuilder.create(FitnessLedger)
+	builder.load(
+		ExerciseRosterMember,
+		EXERCISE_IDS.map((exercise) => ({ id: exercise, exercise }))
+	)
+	builder.load(
+		MachineSlotRosterMember,
+		MACHINE_SLOT_IDS.map((slot) => ({ id: slot, slot }))
+	)
+	builder.load(
+		ExerciseMachineSlot,
+		EXERCISE_MACHINE_SLOT_IDS.map((id) => ({ id, ...exerciseMachineSlotById[id] }))
+	)
+	builder.load(HeartRateZonePartitionMember, [{ id: "SixZones", zones: { start: 0n, end: 6n } }])
+	const admission = await builder.admit()
+	if (admission.tag !== "accepted") {
+		return rejected("BumbleDB rejected the fresh fitness store", admission.violations)
+	}
+	return Db.fromInstance(storePath, admission.value)
 }
 
 export const openFitnessDatabase = (storePath: string) => Db.open(storePath, FitnessLedger)

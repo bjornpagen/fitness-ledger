@@ -57,7 +57,7 @@ For every dynamic work set:
 - Stop before range, body position, or movement path changes.
 - Do not deliberately train to failure or use forced repetitions, negatives, drop sets, or rest-pause.
 
-Track load, clean repetitions, estimated RIR, and pain. Do not use time under tension as the progression variable.
+Track load, clean repetitions, estimated RIR, and a required 0–10 pain rating. Do not use time under tension as the progression variable.
 
 ### Timed static contraction standard
 
@@ -74,7 +74,7 @@ The body and obstacle do not move. Breathe continuously. Reduce effort immediate
 
 Keep setup, range, and cadence fixed. Increase one selector position or the smallest dumbbell increment only after every prescribed set for that exercise reaches 8 clean repetitions while still targeting about 2 RIR on two consecutive exposures. If the increased load prevents 5 clean repetitions, return to the preceding load at the next exposure.
 
-TSC does not use the dynamic promotion rule. Keep the obstacle, body position, bench angle, and yoga-block placement fixed. Record actual duration and pain only. Without force-measuring equipment, do not invent pounds, force, RIR, or a progression claim.
+TSC does not use the dynamic promotion rule. Keep the obstacle, body position, bench angle, and yoga-block placement fixed. Record actual duration and the required 0–10 pain rating only. Without force-measuring equipment, do not invent pounds, force, RIR, or a progression claim.
 
 ### Initial load calibration
 

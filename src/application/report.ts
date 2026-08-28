@@ -93,7 +93,7 @@ export function renderPlan(): string {
 		"",
 		`Dynamic progression: increase one selector position or the smallest dumbbell step only after every prescribed set for that exercise reaches ${prescription.strength.repetitionMaximum} clean reps while still targeting about ${prescription.strength.targetRir} RIR on ${prescription.strength.promotionExposures} consecutive exposures.`,
 		`If the increased resistance prevents ${prescription.strength.repetitionMinimum} clean reps, return to the preceding resistance at the next exposure.`,
-		"TSC progression: keep the obstacle and body position fixed, ramp effort gradually across all three phases, and record only the duration and pain actually observed; do not invent a force value or RIR.",
+		"TSC progression: keep the obstacle and body position fixed, ramp effort gradually across all three phases, and record only the duration and 0–10 pain rating actually observed; do not invent a force value or RIR.",
 		"Do not deliberately train to failure or use forced reps, negatives, drop sets, or other set-extending methods.",
 		"",
 		"E-bike session",
