@@ -11,6 +11,7 @@ import {
 	FitnessLedger,
 	MachineSlot,
 	MachineSlotPosition,
+	PAIN_RATING_IDS,
 	PainRating,
 	type PainRatingId,
 	Person,
@@ -131,7 +132,7 @@ const selector = (exercise: ExerciseId, order: bigint, resistancePosition: bigin
 	exercise,
 	loadKind: "SelectorPosition",
 	order,
-	painRating: "Pain0",
+	painRating: "NoPain",
 	repetitions: 6n,
 	rir: 2n,
 	resistancePosition
@@ -181,18 +182,22 @@ test("the theory contains only the hard-cutover observation model", async () => 
 	assert.equal(MachineSlot.axioms["d-200-seat-height"].machine, "d-200")
 	assert.equal(MachineSlot.axioms["d-400-lower-leg-roller"].machine, "d-400")
 	assert.deepEqual(PainRating.data.handles, [
-		"Pain0",
-		"Pain1",
-		"Pain2",
-		"Pain3",
-		"Pain4",
-		"Pain5",
-		"Pain6",
-		"Pain7",
-		"Pain8",
-		"Pain9",
-		"Pain10"
+		"NoPain",
+		"VeryMild",
+		"Discomforting",
+		"Tolerable",
+		"Distressing",
+		"VeryDistressing",
+		"Intense",
+		"VeryIntense",
+		"UtterlyHorrible",
+		"ExcruciatingUnbearable",
+		"UnimaginableUnspeakable"
 	])
+	assert.deepEqual(
+		PAIN_RATING_IDS.map((rating) => PainRating.axioms[rating].numericRating),
+		Array.from({ length: 11 }, (_, rating) => BigInt(rating))
+	)
 
 	const database = await testDatabase("fitness-ledger-theory-")
 	assert.equal(
@@ -256,7 +261,7 @@ test("work-set parents can attach only to strength activities", async () => {
 				exercise: "cl-2403-leg-press",
 				loadKind: "SelectorPosition",
 				order: 1n,
-				painRating: "Pain0"
+				painRating: "NoPain"
 			}
 		])
 		transaction.insert(SelectorWorkSet, [{ workSet, repetitions: 8n, rir: 2n, resistancePosition: 1n }])
@@ -288,7 +293,7 @@ test("every work-set parent requires exactly the subtype selected by load kind",
 				exercise: "cl-2403-leg-press",
 				loadKind: "SelectorPosition",
 				order: 1n,
-				painRating: "Pain0"
+				painRating: "NoPain"
 			}
 		])
 	})
@@ -317,7 +322,7 @@ test("every work-set parent requires exactly the subtype selected by load kind",
 				exercise: "cl-2403-leg-press",
 				loadKind: "SelectorPosition",
 				order: 1n,
-				painRating: "Pain0"
+				painRating: "NoPain"
 			}
 		])
 		transaction.insert(DumbbellWorkSet, [{ workSet, repetitions: 8n, rir: 2n, eachTenthsLb: 200n }])
@@ -333,7 +338,7 @@ test("one direct transaction records selector, dumbbell, and TSC work", async ()
 			exercise: "back-supported-neutral-db-overhead-press",
 			loadKind: "DumbbellPair",
 			order: 1n,
-			painRating: "Pain0",
+			painRating: "NoPain",
 			repetitions: 7n,
 			rir: 2n,
 			eachTenthsLb: 200n
@@ -342,7 +347,7 @@ test("one direct transaction records selector, dumbbell, and TSC work", async ()
 			exercise: "bench-tsc-neck-extension",
 			loadKind: "TimedStaticContraction",
 			order: 1n,
-			painRating: "Pain0",
+			painRating: "NoPain",
 			durationSeconds: 90n
 		}
 	])

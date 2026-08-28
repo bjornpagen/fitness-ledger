@@ -32,20 +32,37 @@ export const ExerciseMachineSlotId = closed("ExerciseMachineSlotId", EXERCISE_MA
 export const ActivityKind = closed("ActivityKind", ["Strength", "EBike"])
 export const CompletedAtPrecision = closed("CompletedAtPrecision", ["Minute", "Millisecond"])
 export const PAIN_RATING_IDS = [
-	"Pain0",
-	"Pain1",
-	"Pain2",
-	"Pain3",
-	"Pain4",
-	"Pain5",
-	"Pain6",
-	"Pain7",
-	"Pain8",
-	"Pain9",
-	"Pain10"
+	"NoPain",
+	"VeryMild",
+	"Discomforting",
+	"Tolerable",
+	"Distressing",
+	"VeryDistressing",
+	"Intense",
+	"VeryIntense",
+	"UtterlyHorrible",
+	"ExcruciatingUnbearable",
+	"UnimaginableUnspeakable"
 ] as const
 export type PainRatingId = (typeof PAIN_RATING_IDS)[number]
-export const PainRating = closed("PainRating", PAIN_RATING_IDS)
+export const PainRating = closed(
+	"PainRating",
+	PAIN_RATING_IDS,
+	{ numericRating: u64 },
+	{
+		NoPain: { numericRating: 0n },
+		VeryMild: { numericRating: 1n },
+		Discomforting: { numericRating: 2n },
+		Tolerable: { numericRating: 3n },
+		Distressing: { numericRating: 4n },
+		VeryDistressing: { numericRating: 5n },
+		Intense: { numericRating: 6n },
+		VeryIntense: { numericRating: 7n },
+		UtterlyHorrible: { numericRating: 8n },
+		ExcruciatingUnbearable: { numericRating: 9n },
+		UnimaginableUnspeakable: { numericRating: 10n }
+	}
+)
 export const ProfileSlot = closed("ProfileSlot", ["Primary"])
 export const HeartRateZonePartition = closed("HeartRateZonePartition", ["SixZones"])
 export const MeasurementKind = closed("MeasurementKind", ["BodyWeight", "Waist"])

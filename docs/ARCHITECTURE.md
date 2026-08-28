@@ -65,7 +65,7 @@ It contains no facility inventory, routine, schedule, caffeine rule, e-bike reci
 - every parent must have exactly one child selected by that load kind;
 - a child cannot exist without the matching parent.
 
-The parent owns activity, exercise, within-exercise order, and the closed `Pain0`–`Pain10` rating. Selector repetitions/RIR/resistance, dumbbell repetitions/RIR/weight, and timed-static duration live only on their corresponding children. This keeps intrinsic load shape in the theory while leaving exercise order, prescribed set counts, progression, and technique in policy. Pain is always supplied; absence is not encoded as zero. RIR remains an open nonnegative count.
+The parent owns activity, exercise, within-exercise order, and a closed pain anchor from `NoPain` through `UnimaginableUnspeakable`. Each anchor carries its fixed numeric rating from 0 through 10. Selector repetitions/RIR/resistance, dumbbell repetitions/RIR/weight, and timed-static duration live only on their corresponding children. This keeps intrinsic load shape in the theory while leaving exercise order, prescribed set counts, progression, and technique in policy. Pain is always supplied; absence is not encoded as `NoPain`. RIR remains an open nonnegative count.
 
 ### Activity time and machine geometry
 

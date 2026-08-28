@@ -27,9 +27,9 @@ Translate the supplied facts directly into one typed BumbleDB transaction. The a
 | Observation | Parent and subtype facts | Required supplied values |
 |---|---|---|
 | Strength session | `Activity` + `StrengthActivity` + `WorkSet` parents and load-specific children | actual completion instant, honest precision, UTC offset; each exercise, set order, result, and 0–10 pain rating |
-| Selector set | `WorkSet` + `SelectorWorkSet` | exercise, order, repetitions, RIR, `Pain0`–`Pain10`, resistance position |
-| Dumbbell set | `WorkSet` + `DumbbellWorkSet` | exercise, order, repetitions, RIR, `Pain0`–`Pain10`, tenths of a pound per hand |
-| Neck TSC | `WorkSet` + `TscWorkSet` | exercise, order, actual duration, `Pain0`–`Pain10` |
+| Selector set | `WorkSet` + `SelectorWorkSet` | exercise, order, repetitions, RIR, anchored pain rating, resistance position |
+| Dumbbell set | `WorkSet` + `DumbbellWorkSet` | exercise, order, repetitions, RIR, anchored pain rating, tenths of a pound per hand |
+| Neck TSC | `WorkSet` + `TscWorkSet` | exercise, order, actual duration, anchored pain rating |
 | E-bike ride | `Activity` + `EBikeActivity` | actual completion instant, honest precision, and UTC offset |
 | Sleep | `SleepInterval` | exact start/end with UTC offset and nap classification |
 | Body weight | `Measurement` + `BodyWeightMeasurement` | observation instant and tenths of a pound |
@@ -40,7 +40,7 @@ An activity's `completedAt` is the actual completion event, never database commi
 
 Correct a wrong completion clock without touching its observation tree: read the exact `Activity` fact, then in one typed transaction delete that fact and insert its replacement with the same ID and corrected completion fields. BumbleDB judges the final state atomically, so the existing subtype, work sets, and settings remain attached. Read the corrected activity and its children back before reporting success.
 
-Read the single `Person` fact to obtain the private person ID. A fresh private seed must insert that person and `PrimaryProfile { person, slot: "Primary" }` together; the theory rejects an unlinked person or a second profile. Reserve fresh activity and work-set IDs inside one transaction, then insert every `WorkSet` with exactly the child selected by its `loadKind`. `painRating` belongs to the parent and must be one of the closed handles `Pain0` through `Pain10`, corresponding exactly to conventional numeric ratings 0 through 10. Omission never means `Pain0`. If required information is absent, ask only for that information; do not fill it with a default. RIR remains a supplied nonnegative estimate, not a pain surrogate. Report BumbleDB rejections instead of bypassing the theory.
+Read the single `Person` fact to obtain the private person ID. A fresh private seed must insert that person and `PrimaryProfile { person, slot: "Primary" }` together; the theory rejects an unlinked person or a second profile. Reserve fresh activity and work-set IDs inside one transaction, then insert every `WorkSet` with exactly the child selected by its `loadKind`. `painRating` belongs to the parent and uses the closed anchors from `START_HERE.md`: `NoPain`, `VeryMild`, `Discomforting`, `Tolerable`, `Distressing`, `VeryDistressing`, `Intense`, `VeryIntense`, `UtterlyHorrible`, `ExcruciatingUnbearable`, and `UnimaginableUnspeakable`, mapped in that order to 0 through 10. Omission never means `NoPain`. If required information is absent, ask only for that information; do not fill it with a default. RIR remains a supplied nonnegative estimate, not a pain surrogate. Report BumbleDB rejections instead of bypassing the theory.
 
 Machine slots belong to machines, and `ExerciseMachineSlot` is only an applicability whitelist. No exercise requires every applicable slot to be recorded. Insert a `MachineSlotPosition` only for a printed or otherwise defined ordinal actually supplied by the user, then attach it to the relevant set with `WorkSetMachineSetting`. A setting stated once may carry forward within the active conversational workout until changed; a change such as “seat 2” creates a new row on the later set. Never copy a historical setting into a new session, invent an irrelevant value, or turn omitted settings into facts. Resistance remains separate in `SelectorWorkSet.resistancePosition`.
 

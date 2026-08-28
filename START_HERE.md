@@ -59,6 +59,22 @@ For every dynamic work set:
 
 Track load, clean repetitions, estimated RIR, and a required 0–10 pain rating. Do not use time under tension as the progression variable.
 
+Use these fixed pain anchors:
+
+| Rating | Anchor |
+|---:|---|
+| 0 | No pain |
+| 1 | Very mild |
+| 2 | Discomforting |
+| 3 | Tolerable |
+| 4 | Distressing |
+| 5 | Very distressing |
+| 6 | Intense |
+| 7 | Very intense |
+| 8 | Utterly horrible |
+| 9 | Excruciating, unbearable |
+| 10 | Unimaginable, unspeakable |
+
 ### Timed static contraction standard
 
 Slots 10 and 11 use one continuous 90-second contraction against an immovable padded obstacle:
