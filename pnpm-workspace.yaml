@@ -4,7 +4,7 @@ allowBuilds:
   msgpackr-extract: false
 
 minimumReleaseAgeExclude:
-  - '@bjornpagen/bumbledb-darwin-arm64@0.20.0'
-  - '@bjornpagen/bumbledb-linux-arm64@0.20.0'
-  - '@bjornpagen/bumbledb-linux-x64@0.20.0'
-  - '@bjornpagen/bumbledb@0.20.0'
+  - '@bjornpagen/bumbledb-darwin-arm64@0.20.1'
+  - '@bjornpagen/bumbledb-linux-arm64@0.20.1'
+  - '@bjornpagen/bumbledb-linux-x64@0.20.1'
+  - '@bjornpagen/bumbledb@0.20.1'

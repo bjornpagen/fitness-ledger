@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@bjornpagen/bumbledb':
-        specifier: 0.20.0
-        version: 0.20.0(typescript@7.0.2)
+        specifier: 0.20.1
+        version: 0.20.1(typescript@7.0.2)
       '@effect/platform-node':
         specifier: 4.0.0-rc.111
         version: 4.0.0-rc.111(effect@4.0.0-rc.111)(redis@6.2.1)
@@ -96,26 +96,26 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@bjornpagen/bumbledb-darwin-arm64@0.20.0':
-    resolution: {integrity: sha512-s3qSUusqODBP1OVGqkhbQRialcGbVCy/bRkPIIDf829HK/OlXJOkE5rAMIGiPkqp3uDvzbdvRilExx6R5u3kww==}
+  '@bjornpagen/bumbledb-darwin-arm64@0.20.1':
+    resolution: {integrity: sha512-ekuOAWP0YGf92QG9LT9b08v//f/WSCgXrJn0IuLqeN91E+gGt8hoWnADPo7mUGD8A6RdSbiHxomoJj6J2PdgwQ==}
     engines: {node: '>=24'}
     cpu: [arm64]
     os: [darwin]
 
-  '@bjornpagen/bumbledb-linux-arm64@0.20.0':
-    resolution: {integrity: sha512-dTGJLsJ9M9ynTSwxa6Dj3PEPZyMbYXcTZRIaCdd8jMauxia4vuj84dlXiZxHmD0IbE6cp6b7/mbyuUYVKMTifg==}
+  '@bjornpagen/bumbledb-linux-arm64@0.20.1':
+    resolution: {integrity: sha512-hOpeVHfkx9/kkCL5CZN67YWWVKEM6/XjroS/7fUHoreoJGCKIdNSBb4AhO+f2zas9DiuvTD3MSvzOrVSvUxeJA==}
     engines: {node: '>=24'}
     cpu: [arm64]
     os: [linux]
 
-  '@bjornpagen/bumbledb-linux-x64@0.20.0':
-    resolution: {integrity: sha512-nYLWrihINgGRRflnU/SYJCfE9HxxFylRTERheH5pEUFFcd7qESYAi/PtH5PNSGxjmo9BFEkhcgtFCMXCbKQjVQ==}
+  '@bjornpagen/bumbledb-linux-x64@0.20.1':
+    resolution: {integrity: sha512-x2UhuTN2886lTSAcdpGNvrFekm7LI0MN98E6pyxXSyDtJJnLBWmZrqdRM3xH33UKVFyrlz7gIv06Xpol69J+pQ==}
     engines: {node: '>=24'}
     cpu: [x64]
     os: [linux]
 
-  '@bjornpagen/bumbledb@0.20.0':
-    resolution: {integrity: sha512-AiBXxlRPoQxiR15BHcMtDvkwdFh92A2s14gfGRcXQ5KLdVAYmqQqDm0ilbGFpH9P408oWYXRIk8dvvALAuyPsQ==}
+  '@bjornpagen/bumbledb@0.20.1':
+    resolution: {integrity: sha512-TV92Tc59EYOhHdnPsdSNxmNMIWJpM/HGJg0kAWuPCyanIAyTi5m4bljPbih+VTxkj/9yMX1C31n5G3Rcd5B9yA==}
     engines: {node: '>=24'}
 
   '@effect/platform-node-shared@4.0.0-rc.112':
@@ -441,23 +441,23 @@ snapshots:
   '@biomejs/cli-win32-x64@2.5.10':
     optional: true
 
-  '@bjornpagen/bumbledb-darwin-arm64@0.20.0':
+  '@bjornpagen/bumbledb-darwin-arm64@0.20.1':
     optional: true
 
-  '@bjornpagen/bumbledb-linux-arm64@0.20.0':
+  '@bjornpagen/bumbledb-linux-arm64@0.20.1':
     optional: true
 
-  '@bjornpagen/bumbledb-linux-x64@0.20.0':
+  '@bjornpagen/bumbledb-linux-x64@0.20.1':
     optional: true
 
-  '@bjornpagen/bumbledb@0.20.0(typescript@7.0.2)':
+  '@bjornpagen/bumbledb@0.20.1(typescript@7.0.2)':
     dependencies:
       '@superbuilders/errors': 4.0.2(typescript@7.0.2)
       arkregex: 0.0.8
     optionalDependencies:
-      '@bjornpagen/bumbledb-darwin-arm64': 0.20.0
-      '@bjornpagen/bumbledb-linux-arm64': 0.20.0
-      '@bjornpagen/bumbledb-linux-x64': 0.20.0
+      '@bjornpagen/bumbledb-darwin-arm64': 0.20.1
+      '@bjornpagen/bumbledb-linux-arm64': 0.20.1
+      '@bjornpagen/bumbledb-linux-x64': 0.20.1
     transitivePeerDependencies:
       - typescript
 
