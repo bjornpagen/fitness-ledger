@@ -1,0 +1,8 @@
+language js
+
+or {
+	`class $_ extends Error { $_ }`,
+	`class extends Error { $_ }`
+} as $class where {
+	register_diagnostic(span=$class, message="Direct Error subclasses are banned. Model expected failures with an Effect tagged error.", severity="error")
+}

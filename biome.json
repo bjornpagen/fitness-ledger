@@ -1,0 +1,65 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"includes": ["src/**/*.ts", "scripts/**/*.ts", "test/**/*.ts", "*.json"]
+	},
+	"plugins": [
+		"./gritql/no-as-type-assertion.grit",
+		"./gritql/no-bun.grit",
+		"./gritql/no-dynamic-imports.grit",
+		"./gritql/no-extends-error.grit",
+		"./gritql/no-hand-rolled-sleep.grit",
+		"./gritql/no-instanceof-error.grit",
+		"./gritql/no-new-error.grit",
+		"./gritql/no-raw-regexp.grit",
+		"./gritql/no-stringified-errors.grit",
+		"./gritql/no-switch-default-bailout.grit",
+		"./gritql/no-try.grit",
+		"./gritql/no-zod-import.grit"
+	],
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 120
+	},
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"preset": "recommended",
+			"correctness": {
+				"noUnusedImports": "error",
+				"noUnusedVariables": "error",
+				"noUnusedFunctionParameters": "error"
+			},
+			"style": {
+				"useNodejsImportProtocol": "error"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double",
+			"semicolons": "asNeeded",
+			"trailingCommas": "none"
+		}
+	},
+	"json": {
+		"formatter": {
+			"trailingCommas": "none"
+		}
+	}
+}

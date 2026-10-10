@@ -1,0 +1,11 @@
+language js
+
+or {
+	`Bun.$_`,
+	`import $_ from "bun"`,
+	`import $_ from "bun:test"`,
+	`import $_ from "bun:ffi"`,
+	`import $_ from "bun:sqlite"`
+} as $use where {
+	register_diagnostic(span=$use, message="Bun is outside this compiler's runtime. Use the Node equivalent.", severity="error")
+}

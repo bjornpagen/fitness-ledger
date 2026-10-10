@@ -1,0 +1,5 @@
+language js
+
+`import $_ from "zod"` as $import where {
+	register_diagnostic(span=$import, message="Zod is outside this compiler's schema boundary. Decode external values with Effect Schema.", severity="error")
+}

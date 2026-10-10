@@ -1,0 +1,7 @@
+packages: []
+
+minimumReleaseAgeExclude:
+  - '@bjornpagen/bumbledb-darwin-arm64@2.0.0'
+  - '@bjornpagen/bumbledb-linux-arm64@2.0.0'
+  - '@bjornpagen/bumbledb-linux-x64@2.0.0'
+  - '@bjornpagen/bumbledb@2.0.0'
