@@ -7,6 +7,7 @@ import { ChangeSet, key, relation, schema, uuid } from "@bjornpagen/bumbledb"
 import { Db } from "@bjornpagen/bumbledb/engine"
 import { Effect, Option, Result, Stream } from "effect"
 import { createFitnessDatabase, openFitnessDatabase, readRows } from "#application/database.ts"
+import { PRIVATE_ROOT, PROJECT_ROOT, storeDestination } from "#application/paths.ts"
 import * as queries from "#application/queries.ts"
 import { FitnessLedger, Session, SessionStart, SessionStartBySession } from "#application/schema.ts"
 import { observationId } from "#mechanism/identity.ts"
@@ -21,6 +22,28 @@ test("the theory has its pinned store fingerprint", () =>
 			assert.equal(database.schemaId, "8fa67f3075421df555e5fb630d452a21204e7c8b7bcfbc518518cbff9f488d0f")
 		})
 	))
+
+test("a store may live anywhere outside the tracked repository tree", async (t) => {
+	const outside = await mkdtemp(join(tmpdir(), "fitness-ledger-anywhere-"))
+	t.after(() => rm(outside, { recursive: true, force: true }))
+	const store = join(outside, "ledger.bdb")
+	assert.equal(storeDestination(store), store)
+	assert.equal(storeDestination(undefined), join(PRIVATE_ROOT, "ledger.bdb"))
+	for (const refused of [
+		"",
+		join(PROJECT_ROOT, "src/ledger.bdb"),
+		PRIVATE_ROOT,
+		join(PRIVATE_ROOT, "sources/ledger.bdb")
+	])
+		assert.throws(() => storeDestination(refused), refused)
+	await run(
+		Effect.gen(function* () {
+			yield* Effect.scoped(createFitnessDatabase(store))
+			const database = yield* openFitnessDatabase(store)
+			assert.deepEqual(yield* rows(database, queries.sessions), [])
+		})
+	)
+})
 
 test("prepared queries retain their snapshot and close with their scope", () =>
 	run(
@@ -100,16 +123,18 @@ test("create, close, reopen, and rejected fingerprint checks preserve the origin
 	)
 })
 
-test("public lifecycle refuses destinations outside private before creating anything", async (t) => {
-	const root = await mkdtemp(join(tmpdir(), "fitness-ledger-destination-"))
-	t.after(() => rm(root, { recursive: true, force: true }))
+test("public lifecycle refuses stores inside the tracked tree or original sources before creating anything", async () => {
+	const tracked = join(PROJECT_ROOT, "test", "never-created.bdb")
+	const sources = join(PRIVATE_ROOT, "sources", "never-created.bdb")
 	await run(
 		Effect.gen(function* () {
-			assert.ok(Result.isFailure(yield* Effect.result(createFitnessDatabase(join(root, "database")))))
-			assert.ok(Result.isFailure(yield* Effect.result(openFitnessDatabase(join(root, "database")))))
+			for (const store of [tracked, sources]) {
+				assert.ok(Result.isFailure(yield* Effect.result(createFitnessDatabase(store))), store)
+				assert.ok(Result.isFailure(yield* Effect.result(openFitnessDatabase(store))), store)
+			}
 		})
 	)
-	assert.deepEqual(await readdir(root), [])
+	assert.equal((await readdir(join(PROJECT_ROOT, "test"))).includes("never-created.bdb"), false)
 })
 
 test("scoped query results and snapshots fail after closure without breaking the database", () =>

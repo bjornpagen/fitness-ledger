@@ -7,7 +7,7 @@ import {
 } from "@bjornpagen/bumbledb"
 import { Db } from "@bjornpagen/bumbledb/engine"
 import { Effect } from "effect"
-import { assertPrivateDestination } from "#application/paths.ts"
+import { assertStoreDestination } from "#application/paths.ts"
 import { FitnessLedger } from "#application/schema.ts"
 import { FitnessLedgerFailure } from "#mechanism/failure.ts"
 
@@ -25,7 +25,7 @@ export const DatabaseRuntime = Bumble.layer(databaseRuntimeOptions)
 
 const privateStore = (storePath: string) =>
 	Effect.tryPromise({
-		try: () => assertPrivateDestination(storePath),
+		try: () => assertStoreDestination(storePath),
 		catch: (cause) =>
 			cause instanceof FitnessLedgerFailure
 				? cause

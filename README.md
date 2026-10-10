@@ -44,7 +44,7 @@ node src/application/cli.ts session.end '{}'
 
 `pnpm ledger <op> '<json>'` is the same command. One JSON object goes in and one comes out; a refusal prints `{code, message}` on stderr and exits 1, and re-running a write with the same input is no change. `next` announces the exact pin or weight and every control and bench setting, carried from the last immediate set of that exercise; `set.record` records the unmentioned values exactly as announced, with `NoPain`. [SKILL.md](SKILL.md) is the full guide.
 
-`private/ledger.bdb` is the default store path; BumbleDB keeps its data in a `store.bdb` child there and its directory lease under `private/~lease/`. `FITNESS_LEDGER_STORE` may select another path inside `private/`, outside `private/sources/`.
+`private/ledger.bdb` is the default store path; BumbleDB keeps its data in a `store.bdb` child there and its directory lease under `private/~lease/`. `FITNESS_LEDGER_STORE` may select any other path outside the tracked repository tree and `private/sources/`, for example a folder on the Desktop.
 
 Use Node 26 or newer and the pinned pnpm version. Source extraction additionally requires Poppler's `pdftotext` on PATH. The acceptance gate uses synthetic data, never the private personal store. Node typings track the latest release; NodeNext resolution supports direct TypeScript execution.
 

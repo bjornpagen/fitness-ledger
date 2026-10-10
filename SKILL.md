@@ -21,10 +21,13 @@ node src/application/cli.ts                  # every op with a one-line summary
   to the minute, at the America/Chicago offset of that instant. Use the user's stated time when they
   give one; never invent one.
 - Pins, reps and seconds are numbers. A dumbbell weight is pounds in each hand, as a string: `"12.5"`.
-- The ledger is `private/ledger.bdb`; `FITNESS_LEDGER_STORE` selects another path inside `private/`.
+- The ledger defaults to `private/ledger.bdb`; `FITNESS_LEDGER_STORE` selects any other path outside the
+  tracked repository tree, for example `FITNESS_LEDGER_STORE=~/Desktop/ledger.bdb`.
 
-**Never write scripts.** Every read and write goes through these ops. Never ask about pain or a
-setting the user did not mention: the defaults below are the user's decision.
+**Use these ops to coach and record.** For anything they don't cover (a full export, a bulk fix,
+analysis), write a TypeScript program against the repo's schema, queries and database helpers in
+`src/application`. Never ask about pain or a setting the user did not mention: the defaults below are
+the user's decision.
 
 **Start with `status`.** It shows today in America/Chicago, whether strength is scheduled, the open
 session, the latest closed one, and `blockers`, such as a session left open from an earlier day.

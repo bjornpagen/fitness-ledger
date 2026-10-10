@@ -8,16 +8,15 @@ These instructions apply to work in this repository. The fitness prescription re
 - Read `SKILL.md` before answering personal questions or writing observations.
 - Never track anything under `private/`. It contains observations, database state, purchased sources, and photographs.
 - Never put a personal value in the public tree or Git history: no name, height, sex, birth date, residence, facility identity, precise coordinate, purchaser watermark, access token, or real observation value from the user's ledger (for example an actual selector position, control position, repetition count, weight, time or bench label). Tests and examples use synthetic data only.
-- TypeScript is the only implementation and scripting language. Do not add CSV databases, SQL, or an alternate entry DSL.
+- Implementation code is TypeScript.
 - `src/mechanism/` must not import `src/policy/` or `src/application/`.
 - `src/policy/` owns the prescription and its recommended exercise order, the exercise roster, machines, controls and their numbering conventions, execution instructions, the schedule, equipment notes and the progression rule.
 - `src/application/schema.ts` is the authoritative BumbleDB theory. Its fingerprint is regression-tested, and opening a store with a different fingerprint fails.
-- Use the pinned BumbleDB 2.0 package, `@bjornpagen/bumbledb`, through its embedded engine: `Db.create`/`Db.open` from `@bjornpagen/bumbledb/engine`, exactly one `Bumble.layer`, snapshots, `ChangeSet.builder`, and `judge`/`apply` with the snapshot's witness. The hosted `Database`, migrations and the `bumbledb` CLI are not used.
-- BumbleDB is the only store for real personal observations. Write facts with typed transactions; do not add a second observation representation.
-- The ledger is `private/ledger.bdb`. `FITNESS_LEDGER_STORE` may select another path inside `private/`, outside `private/sources/`.
-- Agents read and write observations only through the domain op CLI, `node src/application/cli.ts <op> '<json>'`, as `SKILL.md` describes. Do not write ad hoc ledger scripts, and do not add a generic database CLI.
+- Use the pinned BumbleDB 2.0 package, `@bjornpagen/bumbledb`, through its embedded engine: `Db.create`/`Db.open` from `@bjornpagen/bumbledb/engine`, exactly one `Bumble.layer`, snapshots, `ChangeSet.builder`, and `judge`/`apply` with the snapshot's witness.
+- The BumbleDB store is the ledger of record; write facts with typed transactions. Exports, copies and analyses in any format are fine.
+- The ledger defaults to `private/ledger.bdb`. `FITNESS_LEDGER_STORE` may select any other path, such as a folder on the Desktop, except inside the tracked repository tree (where it could be committed) or `private/sources/`.
+- The domain op CLI, `node src/application/cli.ts <op> '<json>'` (see `SKILL.md`), is the normal way to coach and record workouts. For anything it does not cover, such as a full export, a bulk fix, a migration or an analysis, write a TypeScript program against `src/application` (the schema, queries and database helpers) and run it directly.
 - Full source binaries live in `private/sources/`. Public `sources/` contains only catalogs and canonical references. Rebuild searchable derivatives with `pnpm sources:extract-text`.
-- Do not add hidden files or hidden directories beyond existing Git/package-manager infrastructure.
 - Run on Node 26 or newer with the pinned Effect 4.0.2. Use Effect programs and `NodeRuntime.runMain` at executable boundaries.
 - Do not configure or push to a remote without the user's explicit remote and branch authorization.
 
